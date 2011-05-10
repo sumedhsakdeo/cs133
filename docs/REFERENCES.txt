@@ -1,1 +1,2 @@
 A] Arbitrary-precision arithmetic wiki: http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic
+B] Git commands: http://git-scm.com/documentation
