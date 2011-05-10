@@ -1,3 +1,4 @@
 A] Arbitrary-precision arithmetic wiki: http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic
 B] Git commands: http://git-scm.com/documentation
-B] Git reference: http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
+C] Git reference: http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
+
