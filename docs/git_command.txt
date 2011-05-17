@@ -1,12 +1,10 @@
 1] Downloading the code for the first time:
 	git clone git@github.com:sumedhsakdeo/cs133.git
 
-2] To get update from the repository
-	git remote add upstream git@github.com:sumedhsakdeo/cs133.git
-	git fetch upstream
-	git merge upstream/master
+2] To commit code:
+	git commit -am "<Commit message here>"
+	git push
 
-3] Push commit to github
-	git push origin master
-
-4]  
+3] To get the changes made by a collaborator
+	git fetch
+	git merge origin/master
