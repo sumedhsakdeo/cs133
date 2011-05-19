@@ -18,8 +18,8 @@ public:
     BigUInt_Inf* operator-(const BigUInt_Inf *);
     BigUInt_Inf* operator*(const BigUInt_Inf *);
     BigUInt_Inf* operator/(const BigUInt_Inf *);
-    BigUInt_Inf* operator<<(const BigUInt_Inf *);
-    BigUInt_Inf* operator>>(const BigUInt_Inf *);
+    BigUInt_Inf* operator<<(const unsigned int&);
+    BigUInt_Inf* operator>>(const unsigned int&);
     BigUInt_Inf* operator&(const BigUInt_Inf *);
     BigUInt_Inf* operator|(const BigUInt_Inf *);
     BigUInt_Inf* operator^(const BigUInt_Inf *);

@@ -47,14 +47,14 @@ BigUInt_Serial_Impl::operator/(const BigUInt_Inf * op2)
 }
 
 BigUInt_Inf *
-BigUInt_Serial_Impl::operator<<(const BigUInt_Inf * op2)
+BigUInt_Serial_Impl::operator<<(const unsigned int& op2)
 {
     BigUInt_Inf * temp;
     return temp;
 }
 
 BigUInt_Inf *
-BigUInt_Serial_Impl::operator>>(const BigUInt_Inf * op2)
+BigUInt_Serial_Impl::operator>>(const unsigned int& op2)
 {
     BigUInt_Inf * temp;
     return temp;

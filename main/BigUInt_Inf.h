@@ -12,8 +12,8 @@ public:
     virtual BigUInt_Inf* operator-(const BigUInt_Inf *) = 0;
     virtual BigUInt_Inf* operator*(const BigUInt_Inf *) = 0;
     virtual BigUInt_Inf* operator/(const BigUInt_Inf *) = 0;
-    virtual BigUInt_Inf* operator<<(const BigUInt_Inf *) = 0;
-    virtual BigUInt_Inf* operator>>(const BigUInt_Inf *) = 0;
+    virtual BigUInt_Inf* operator<<(const unsigned int&) = 0;
+    virtual BigUInt_Inf* operator>>(const unsigned int&) = 0;
     virtual BigUInt_Inf* operator&(const BigUInt_Inf *) = 0;
     virtual BigUInt_Inf* operator|(const BigUInt_Inf *) = 0;
     virtual BigUInt_Inf* operator^(const BigUInt_Inf *) = 0;

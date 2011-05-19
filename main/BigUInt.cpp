@@ -42,84 +42,183 @@ BigUInt::operator+(const BigUInt& op2)
 
     BigUInt temp;
     temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator-(const BigUInt& op2)
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator-(op2.bui);
+
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator*(const BigUInt& op2)
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator*(op2.bui);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator/(const BigUInt& op2)
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator/(op2.bui);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
-BigUInt::operator<<(const BigUInt & op2)
+BigUInt::operator<<(const unsigned int& op2)
 {
+     BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator<<(op2);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+    
     return temp;
 }
  
 BigUInt
-BigUInt::operator>>(const BigUInt& op2)
+BigUInt::operator>>(const unsigned int& op2)
 {
+     BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator<<(op2);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator&(const BigUInt& op2)
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator&(op2.bui);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator|(const BigUInt& op2)
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator|(op2.bui);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator^(const BigUInt& op2)
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator^(op2.bui);
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
 
 BigUInt
 BigUInt::operator~()
 {
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    tempbui = bui->operator~();
 
     BigUInt temp;
+    temp.SetBui(tempbui);
+
     return temp;
 }
    
 bool
-BigUInt::operator==(const BigUInt& op)
+BigUInt::operator==(const BigUInt& op2)
 {
-    return true;
+    BigUInt_Inf *tempbui;    
+#ifdef SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    return (bui->operator==(op2.bui));
 }
 
 void
