@@ -8,9 +8,9 @@ using namespace std;
 BigUInt::BigUInt()
 {
 #ifdef SERIAL
-    bui = new BigUInt_Serial_Impl();
+    //bui = new BigUInt_Serial_Impl();
 #elif PARALLEL
-    bui = new BigUInt_Parallel_Impl();
+    //bui = new BigUInt_Parallel_Impl();
 #endif
 }
 

@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -69,9 +70,16 @@ void add(int num, string* str)
 int main()
 {
     vector<int> num;
-    num.push_back(32767);
-    num.push_back(32767);
-    num.push_back(32767);
+    //num.push_back(32767);
+    //num.push_back(32767);
+    //num.push_back(32767);
+    int temp;
+    do {
+        cin>>temp;
+        if (temp == -1) break;
+        num.push_back(temp);
+    } while(1);
+    reverse(num.begin(), num.end());
 
     long base = 32768;
 

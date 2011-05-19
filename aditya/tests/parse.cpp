@@ -1,0 +1,168 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+string ltoa(long arg)
+{
+    std::string number;
+    std::stringstream strstream;
+    strstream << arg;
+    strstream >> number;
+    return number;
+}
+
+void mult(const long num, string* str)
+{
+    long carry = 0;
+    for (int i = str->length() - 1 ; i >= 0; i--)
+    {
+        long digit = str->at(i) - 48;
+        digit = carry + digit * num;
+        carry = digit / 10;
+        digit = digit % 10;
+        str->at(i) = (char) (digit + 48);
+    }
+    while (carry != 0)
+    {
+        str->insert(0, 1, (char) ((carry % 10) + 48));
+        carry = carry / 10;
+    }
+}
+
+void add(int num, string* str)
+{
+    int i = str->size() - 1;
+    int carry = 0;
+    while (num != 0)
+    {
+        int digit = str->at(i) - 48;
+        digit = digit + (num % 10) + carry;
+        num = num / 10;
+        carry = digit / 10;
+        digit = digit % 10;
+        str->at(i) = (char) (digit + 48);
+        i--;
+    }
+    while (carry != 0)
+    {
+        if (i == -1)
+        {
+            str->insert(0, 1, (char) (carry + 48));
+            carry = 0;
+        }
+        else 
+        {
+            int digit = str->at(i) - 48;
+            digit += carry;
+            carry = digit / 10;
+            digit = digit % 10;
+            str->at(i) = (char) (digit + 48);
+            --i;
+        }
+    }
+}
+
+
+void bignum2string(vector <int> num)
+{
+    //vector<int> num;
+    //num.push_back(32767);
+    //num.push_back(32767);
+    //num.push_back(32767);
+    //int temp;
+    //do {
+    //    cin>>temp;
+    //    if (temp == -1) break;
+    //    num.push_back(temp);
+    //} while(1);
+    reverse(num.begin(), num.end());
+
+    long base = INT_MAX;
+    base++;
+
+    string* output = new string("");
+    *output = ltoa(num.at(0));
+    for (int i = 1; i < num.size(); i++)
+    {
+        mult(base, output);
+        add(num.at(i), output);
+    }
+
+    cout<<*output<<endl;
+}
+
+
+vector<int> string2bignum()
+{
+    long base = INT_MAX;
+    base++;
+    string input;
+
+    cin >> input;
+    
+    vector<int> representation;
+
+    long dividend = 0;
+    string quotient;
+
+   
+    do
+    {
+        bool firstflag = false;
+        while (input.length() > 0)
+        {
+            if (firstflag == false)
+            {
+                while (dividend < base && input.length() > 0)
+                {
+                    dividend = dividend * 10 + (input[0] - 48);
+                    input.erase(input.begin());
+                    firstflag = true;
+                }
+            }
+            else if (input.length() > 0)
+            {
+                dividend = dividend * 10 + (input[0] - 48);
+                input.erase(input.begin());
+            }
+
+            //now we have a number in dividend that is just greater than base
+            quotient.push_back((dividend / base) + 48);
+            dividend = dividend % base;
+        }
+        //dividend contains remainder, quotient is a string that contains quotient
+        input.clear();
+        input.assign(quotient);
+        //cout<<"New string "<<input<<endl;
+        quotient.clear();
+        //cout<<"Pushed "<<dividend<<endl;
+        representation.push_back(dividend);
+        dividend = 0;
+    } while (!(input.length() == 1 && input[0] == '0'));
+
+    //for (int i = 0; i < representation.size(); i++)
+    //{
+    //    cout<<representation.at(i)<<endl;
+    //}
+
+    //cout << input;
+    return representation;
+}
+
+int main()
+{
+    int i = 0;
+    while (1)
+    {
+        vector <int> oper = string2bignum();
+        bignum2string(oper);
+        //cout<<++i<<endl;
+    }
+    //cout<<INT_MAX;
+    return 0;
+}
