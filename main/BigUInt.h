@@ -2,13 +2,14 @@
 #define _BIG_U_INT_H_
 
 #include "BigUInt_Inf.h"
+#include	<string>
 
 class BigUInt {
 private:
     BigUInt_Inf *bui;
-
 public:
     BigUInt();
+    BigUInt(const std::string&);
     BigUInt operator+(const BigUInt &);
     BigUInt operator-(const BigUInt &);
     BigUInt operator*(const BigUInt &);

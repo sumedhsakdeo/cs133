@@ -3,10 +3,21 @@
 
 #define SERIAL 1
 
+using namespace std;
+
 BigUInt::BigUInt()
 {
 #ifdef SERIAL
     bui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    bui = new BigUInt_Parallel_Impl();
+#endif
+}
+
+BigUInt::BigUInt(const string &str)
+{
+#ifdef SERIAL
+    bui = new BigUInt_Serial_Impl(str);
 #elif PARALLEL
     bui = new BigUInt_Parallel_Impl();
 #endif
