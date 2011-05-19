@@ -1,5 +1,5 @@
 /**
- * Arbitarary Multiprecision Unsigned Integer Arethmatic Lib
+ * Arbitrary Multiprecision Unsigned Integer Arithmetic Lib
  */
 
 #ifndef _BIG_U_INT_INF_H_
