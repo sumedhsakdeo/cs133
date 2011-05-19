@@ -1,7 +1,7 @@
 all:
-	g++ -c BigUInt_Serial_Impl.cpp -o BigUInt_Serial.o
-	g++ -c BigUInt.cpp -o BigInt.o
+	g++ -c -Iinc/ src/BigUInt_Serial_Impl.cpp -o obj/BigUInt_Serial.o
+	g++ -c -Iinc/ src/BigUInt.cpp -o obj/BigInt.o
 
 clean:
-	rm -f *.o
+	rm -r obj/*.o
 
