@@ -154,15 +154,84 @@ vector<int> string2bignum()
     return representation;
 }
 
+vector<int> addBignum(vector<int> num1, vector<int> num2)
+{
+    int limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    long temp = 0;
+    int carry = 0;
+    int i;
+    vector<int> result;
+
+    for (i = 0; i < limit; i++)
+    {
+        temp = (long) num1.at(i) + num2.at(i) + carry;
+        carry = 0;
+        if (temp > INT_MAX)
+        {
+            temp -= (INT_MAX + 1);
+            carry = 1;
+        }
+        result.push_back((int) temp);
+    }
+
+    if (num1.size() > limit)
+    {
+        while (i < num1.size())
+        {
+            temp = num1.at(i) + carry;
+            carry = 0;
+            if (temp > INT_MAX)
+            {
+                temp -= (INT_MAX + 1);
+                carry = 1;
+            }
+            result.push_back((int) temp);
+            i++;
+        }
+    }
+
+    if (num2.size() > limit)
+    {
+        while (i < num2.size())
+        {
+            temp = num2.at(i) + carry;
+            carry = 0;
+            if (temp > INT_MAX)
+            {
+                temp -= (INT_MAX + 1);
+                carry = 1;
+            }
+            result.push_back((int) temp);
+            i++;
+        }
+    }
+
+    if (carry != 0) result.push_back(1);
+    
+    return result;
+}
+
+
 int main()
 {
     int i = 0;
-    while (1)
+    vector<int> sum;
+    //cout<<INT_MAX<<" "<<sizeof(int)<<" "<<sizeof(long)<<LONG_MAX<<endl;
+    while (i < 100)
     {
         vector <int> oper = string2bignum();
+        sum = addBignum(oper, sum);
+        //cout<<sum.size();
         bignum2string(oper);
+
+        //for (int j = 0; j < sum.size(); j++) cout<<sum.at(j)<<"x";
+        //cout<<endl;
+
+        //bignum2string(sum);
         //cout<<++i<<endl;
+        i++;
     }
+    bignum2string(sum);
     //cout<<INT_MAX;
     return 0;
 }
