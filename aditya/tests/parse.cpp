@@ -387,6 +387,47 @@ vector <int> andBignum(vector <int> num1, vector <int> num2)
 
 }
 
+vector <int> orBignum(vector <int> num1, vector <int> num2)
+{
+    vector <int> result;
+    int limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    int i;
+
+    for (i = 0; i < limit; i++)
+    {
+        int temp = num1.at(i) | num2.at(i);
+        result.push_back(temp);
+    }
+
+    if (limit < num1.size())
+    {
+        while (i < num1.size())
+        {
+            result.push_back(num1.at(i));
+            i++;
+        }
+    }
+    else if (limit < num2.size())
+    {
+        while (i < num2.size())
+        {
+            result.push_back(num2.at(i));
+            i++;
+        }
+    }
+
+    //just for sanity, though not really required
+    while (result.size() != 0 && result.back() == 0)
+    {
+        result.pop_back();
+    }
+    return result;
+
+}
+
+
+
+
 int main()
 {
     for (int i = 0; i < 100; i++)
@@ -397,7 +438,7 @@ int main()
         ans.clear();
         bignum2string(oper1);
         bignum2string(oper2);
-        ans = andBignum(oper1, oper2);
+        ans = orBignum(oper1, oper2);
         bignum2string(ans);
     }
     return 0;

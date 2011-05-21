@@ -20,5 +20,5 @@ for j in range(100):
         #print i, digit
     #sum = sum + a
     print b
-    print a & b
+    print a | b
 
