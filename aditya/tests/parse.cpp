@@ -366,7 +366,44 @@ vector <int> multiplyBignum(vector <int> num1, vector <int> num2)
     return result;
 }
 
+vector <int> andBignum(vector <int> num1, vector <int> num2)
+{
+    vector <int> result;
+    int limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+
+    for (int i = 0; i < limit; i++)
+    {
+        int temp = num1.at(i) & num2.at(i);
+        result.push_back(temp);
+    }
+
+    //we ignore the rest, and also not pad with zeros because in our representation, padded zeros are not allowed.
+
+    while (result.size() != 0 && result.back() == 0)
+    {
+        result.pop_back();
+    }
+    return result;
+
+}
+
 int main()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        vector <int> oper1 = string2bignum();
+        vector <int> oper2 = string2bignum();
+        vector <int> ans = string2bignum();
+        ans.clear();
+        bignum2string(oper1);
+        bignum2string(oper2);
+        ans = andBignum(oper1, oper2);
+        bignum2string(ans);
+    }
+    return 0;
+}
+
+int multmain()
 {
     for (int i = 0; i < 100; i++)
     {
