@@ -80,6 +80,13 @@ void bignum2string(vector <int> num)
     //    if (temp == -1) break;
     //    num.push_back(temp);
     //} while(1);
+
+    if (num.size() == 0)
+    {
+        cout<<"0"<<endl;
+        return;
+    }
+
     reverse(num.begin(), num.end());
 
     long base = INT_MAX;
@@ -211,8 +218,94 @@ vector<int> addBignum(vector<int> num1, vector<int> num2)
     return result;
 }
 
+vector<int> subtractBignum(vector<int> num1, vector<int> num2)
+{
+    vector<int> result;
+    int borrow = 0;
+    int newborrow = 0;
+    long temp;
+    int limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    int i;
+
+    //just checking that num1 > num2, else return empty
+    if (num1.size() < num2.size()) return result;
+    if (num1.size() == num2.size()
+        && num1.at(num1.size() - 1) < num2.at(num2.size() - 1)) 
+        return result;
+    
+    for (i = 0; i < limit; i++)
+    {
+        temp = num1.at(i);
+        if (num1.at(i) < (num2.at(i) + borrow)) 
+        {
+            temp += INT_MAX + 1;
+            newborrow = 1;
+        }
+        else
+        {
+            newborrow = 0;
+        }
+        temp -= (num2.at(i) + borrow);
+        borrow = newborrow;
+        result.push_back((int) temp);
+    }
+        
+    if (num1.size() > limit)
+    {
+        while (i < num1.size())
+        {
+            temp = num1.at(i);
+            if (num1.at(i) < borrow)
+            {
+                temp += INT_MAX + 1;
+                newborrow = 1;
+            }
+            else
+            {
+                newborrow = 0;
+            }
+            temp -= borrow;
+            borrow = newborrow;
+            result.push_back((int) temp);
+            i++;
+        }
+    }
+
+    //clean up 0s from head
+    while (result.size() != 0 && result.back() == 0)
+    {
+        result.pop_back();
+    }
+
+    return result;
+
+}
 
 int main()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        vector <int> oper1 = string2bignum();
+        vector <int> oper2 = string2bignum();
+        vector <int> ans = string2bignum();
+        ans.clear();
+        bignum2string(oper1);
+        bignum2string(oper2);
+        ans = subtractBignum(oper1, oper2);
+
+        //for (int i = 0; i < oper1.size(); i++) cout<<oper1.at(i)<<"-";
+        //cout<<endl;
+
+        //for (int i = 0; i < oper2.size(); i++) cout<<oper2.at(i)<<"-";
+        //cout<<endl;
+
+        //for (int i = 0; i < ans.size(); i++) cout<<ans.at(i)<<"-";
+        //cout<<endl;
+        bignum2string(ans);
+    }
+}
+
+int mainForAdd()
 {
     int i = 0;
     vector<int> sum;
