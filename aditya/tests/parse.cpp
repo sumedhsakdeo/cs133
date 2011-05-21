@@ -281,7 +281,111 @@ vector<int> subtractBignum(vector<int> num1, vector<int> num2)
 
 }
 
+vector <int> multiplyBignum(vector <int> num1, vector <int> num2)
+{
+    vector <int> result;
+    //using vedic math urdhwatiryak method
+
+    //first pad zeros to make the input vectors equal sized
+    if (num1.size() > num2.size())
+    {
+        while (num1.size() != num2.size()) num2.push_back(0);
+    }
+    else if (num2.size() > num1.size())
+    {
+        while (num2.size() != num1.size()) num1.push_back(0);
+    }
+
+    int numOps = 0;
+    for (int i = 0; i < ((2 * num1.size()) - 1); i++)
+    {
+        if (i < num1.size()) numOps++;
+        else numOps--;
+        
+        vector <int> intermediate;
+
+        int index1;
+        int index2;
+        if (i < num1.size())
+        {
+            index1 = 0;
+            index2 = numOps - 1;
+        }
+        else
+        {
+            index1 = num1.size() - numOps;
+            index2 = num1.size() - 1;
+
+        }
+
+        for (int j = 0; j < numOps; j++)
+        {
+            long temp = (long) num1.at(index1) * num2.at(index2);
+            vector <int> tmp;
+            long base = INT_MAX;
+            base++;
+            if (!(temp / base == 0 && temp % base == 0)) tmp.push_back((int) (temp % base));
+            if (temp / base != 0) tmp.push_back((int) (temp / base));
+            //cout << "tmp:"<<temp%(INT_MAX+1)<<" "<<temp/(INT_MAX+1)<<" "<<temp<<" "<<num1.at(index1)<<" "<<num2.at(index2)<<" "<<temp-(temp/(INT_MAX+1))*(INT_MAX+1)<<endl;
+            intermediate = addBignum(tmp, intermediate);
+        
+            //cout<<index1<<","<<index2<<endl;
+
+            index1++;
+            index2--;
+        }
+        //shift intermediate to left by i ints
+        if (intermediate.size() > 0)
+        {
+            for (int j = 0; j < i; j++) 
+                intermediate.insert(intermediate.begin(), 1, 0);
+        }
+
+        //for (int j = 0; j < intermediate.size(); j++)
+        //    cout<<intermediate.at(j)<<"-";
+        //cout<<endl;
+
+        result = addBignum(intermediate, result);
+        //for (int j = 0; j < result.size(); j++)
+        //    cout<<result.at(j)<<"=";
+        //cout<<endl;
+    }
+
+
+    //undo padding!
+    while (num1.size() != 0 && num1.back() == 0)
+    {
+        num1.pop_back();
+    }
+    while (num2.size() != 0 && num2.back() == 0)
+    {
+        num2.pop_back();
+    }
+
+
+    return result;
+}
+
 int main()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        vector <int> oper1 = string2bignum();
+        vector <int> oper2 = string2bignum();
+        vector <int> ans = string2bignum();
+        ans.clear();
+        bignum2string(oper1);
+        bignum2string(oper2);
+        ans = multiplyBignum(oper1, oper2);
+            //for (int j = 0; j < ans.size(); j++)
+            //    cout<<ans.at(j)<<"=";
+            //cout<<endl;
+        bignum2string(ans);
+    } 
+    return 0;
+}
+
+int mainForSub()
 {
     for (int i = 0; i < 100; i++)
     {
