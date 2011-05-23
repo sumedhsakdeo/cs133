@@ -4,6 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include <climits>
+#include <cmath>
 
 using namespace std;
 
@@ -503,7 +504,100 @@ bool equalBignum(vector <unsigned> num1, vector <unsigned> num2)
     return true;
 }
 
+vector <unsigned> lshift (vector <unsigned> num1, unsigned shift)
+{
+    vector <unsigned> result;
+    int bitsindigit = sizeof(unsigned) * 8;
+    long mask = pow((double) 2, bitsindigit) - 1;
+
+    int newdigits = shift / bitsindigit;
+    int inshift = shift % bitsindigit;
+    //cout<<"newdigits "<<newdigits<<" inshift "<<inshift<<" mask "<<mask<<endl;
+
+    for (int i = 0; i < newdigits; i++)
+    {
+        result.push_back(0);
+    }
+
+    long temp = 0;
+    for (int i = 0; i < num1.size(); i++)
+    {
+        //cout << "temp at start "<<temp<<endl;
+        temp += (long) ( (long) num1.at(i) << inshift);
+        //cout << "temp " << temp << endl;
+        //cout << "pushed " << (unsigned) (temp & mask) << endl;
+        result.push_back((unsigned) (temp & mask));
+        temp = temp >> bitsindigit;
+    }
+
+    if (temp != 0)
+    {
+        //cout << "yo " << tempendl;
+        result.push_back((unsigned) temp);
+    }
+
+    return result;
+}
+
+vector <unsigned> rshift (vector <unsigned> num1, unsigned shift)
+{
+    vector <unsigned> result;
+    int bitsindigit = sizeof(unsigned) * 8;
+    long mask = (long) (pow((double) 2, bitsindigit) - 1) << bitsindigit;
+
+    int newdigits = shift / bitsindigit;
+    int inshift = shift % bitsindigit;
+
+    unsigned long temp = 0;
+    for (int i = num1.size() - 1; i >= newdigits; i--)
+    {
+        //cout << "temp at start "<<temp<<endl;
+        temp += (unsigned long) ( (unsigned long) num1.at(i) << bitsindigit) >> inshift;
+        //cout << "temp " << temp << endl;
+        //cout << "pushed " << (unsigned) (temp >> bitsindigit) << endl;
+        result.push_back((unsigned) (temp >> bitsindigit));
+        temp = temp << bitsindigit;
+    }
+    
+    reverse(result.begin(), result.end());
+    while (result.size() != 0 && result.back() == 0)
+    {
+        result.pop_back();
+    }
+
+    return result;
+}
+
 int main()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        vector <unsigned> num1 = string2bignum();
+        unsigned shift;
+        cin >> shift;
+        vector <unsigned> ans1 = string2bignum();
+        vector <unsigned> ans2 = string2bignum();
+        ans1.clear();
+        ans2.clear();
+        ans1 = lshift(num1, shift);
+        ans2 = rshift(num1, shift);
+        bignum2string(num1);
+        cout << shift << endl;
+
+        //if (shift == 1186)
+        //{
+        //    for (int j = 0; j < ans1.size(); j++)
+        //        cout<<ans1.at(j)<<"=";
+        //    cout<<endl;
+        //}
+
+        bignum2string(ans1);
+        bignum2string(ans2);
+    }
+    return 0;
+}
+
+int equalmain()
 {
     for (int i = 0; i < 100; i++)
     {
