@@ -7,7 +7,7 @@
 
 using namespace std;
 
-string ltoa(long arg)
+string ltoa(unsigned long arg)
 {
     std::string number;
     std::stringstream strstream;
@@ -16,12 +16,12 @@ string ltoa(long arg)
     return number;
 }
 
-void mult(const long num, string* str)
+void mult(const unsigned long num, string* str)
 {
-    long carry = 0;
+    unsigned long carry = 0;
     for (int i = str->length() - 1 ; i >= 0; i--)
     {
-        long digit = str->at(i) - 48;
+        unsigned long digit = str->at(i) - 48;
         digit = carry + digit * num;
         carry = digit / 10;
         digit = digit % 10;
@@ -34,13 +34,13 @@ void mult(const long num, string* str)
     }
 }
 
-void add(int num, string* str)
+void add(unsigned num, string* str)
 {
-    int i = str->size() - 1;
-    int carry = 0;
+    unsigned i = str->size() - 1;
+    unsigned carry = 0;
     while (num != 0)
     {
-        int digit = str->at(i) - 48;
+        unsigned digit = str->at(i) - 48;
         digit = digit + (num % 10) + carry;
         num = num / 10;
         carry = digit / 10;
@@ -57,7 +57,7 @@ void add(int num, string* str)
         }
         else 
         {
-            int digit = str->at(i) - 48;
+            unsigned digit = str->at(i) - 48;
             digit += carry;
             carry = digit / 10;
             digit = digit % 10;
@@ -68,13 +68,13 @@ void add(int num, string* str)
 }
 
 
-void bignum2string(vector <int> num)
+void bignum2string(vector <unsigned> num)
 {
-    //vector<int> num;
+    //vector<unsigned> num;
     //num.push_back(32767);
     //num.push_back(32767);
     //num.push_back(32767);
-    //int temp;
+    //unsigned temp;
     //do {
     //    cin>>temp;
     //    if (temp == -1) break;
@@ -89,7 +89,7 @@ void bignum2string(vector <int> num)
 
     reverse(num.begin(), num.end());
 
-    long base = INT_MAX;
+    unsigned long base = UINT_MAX;
     base++;
 
     string* output = new string("");
@@ -104,17 +104,17 @@ void bignum2string(vector <int> num)
 }
 
 
-vector<int> string2bignum()
+vector<unsigned> string2bignum()
 {
-    long base = INT_MAX;
+    unsigned long base = UINT_MAX;
     base++;
     string input;
 
     cin >> input;
     
-    vector<int> representation;
+    vector<unsigned> representation;
 
-    long dividend = 0;
+    unsigned long dividend = 0;
     string quotient;
 
    
@@ -161,24 +161,24 @@ vector<int> string2bignum()
     return representation;
 }
 
-vector<int> addBignum(vector<int> num1, vector<int> num2)
+vector<unsigned> addBignum(vector<unsigned> num1, vector<unsigned> num2)
 {
-    int limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
-    long temp = 0;
-    int carry = 0;
+    unsigned limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    unsigned long temp = 0;
+    unsigned carry = 0;
     int i;
-    vector<int> result;
+    vector<unsigned> result;
 
     for (i = 0; i < limit; i++)
     {
-        temp = (long) num1.at(i) + num2.at(i) + carry;
+        temp = (unsigned long) num1.at(i) + num2.at(i) + carry;
         carry = 0;
-        if (temp > INT_MAX)
+        if (temp > UINT_MAX)
         {
-            temp -= (INT_MAX + 1);
+            temp -= (UINT_MAX + 1);
             carry = 1;
         }
-        result.push_back((int) temp);
+        result.push_back((unsigned) temp);
     }
 
     if (num1.size() > limit)
@@ -187,12 +187,12 @@ vector<int> addBignum(vector<int> num1, vector<int> num2)
         {
             temp = num1.at(i) + carry;
             carry = 0;
-            if (temp > INT_MAX)
+            if (temp > UINT_MAX)
             {
-                temp -= (INT_MAX + 1);
+                temp -= (UINT_MAX + 1);
                 carry = 1;
             }
-            result.push_back((int) temp);
+            result.push_back((unsigned) temp);
             i++;
         }
     }
@@ -203,12 +203,12 @@ vector<int> addBignum(vector<int> num1, vector<int> num2)
         {
             temp = num2.at(i) + carry;
             carry = 0;
-            if (temp > INT_MAX)
+            if (temp > UINT_MAX)
             {
-                temp -= (INT_MAX + 1);
+                temp -= (UINT_MAX + 1);
                 carry = 1;
             }
-            result.push_back((int) temp);
+            result.push_back((unsigned) temp);
             i++;
         }
     }
@@ -218,13 +218,13 @@ vector<int> addBignum(vector<int> num1, vector<int> num2)
     return result;
 }
 
-vector<int> subtractBignum(vector<int> num1, vector<int> num2)
+vector<unsigned> subtractBignum(vector<unsigned> num1, vector<unsigned> num2)
 {
-    vector<int> result;
-    int borrow = 0;
-    int newborrow = 0;
-    long temp;
-    int limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    vector<unsigned> result;
+    unsigned borrow = 0;
+    unsigned newborrow = 0;
+    unsigned long temp;
+    unsigned limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
     int i;
 
     //just checking that num1 > num2, else return empty
@@ -238,7 +238,7 @@ vector<int> subtractBignum(vector<int> num1, vector<int> num2)
         temp = num1.at(i);
         if (num1.at(i) < (num2.at(i) + borrow)) 
         {
-            temp += INT_MAX + 1;
+            temp += UINT_MAX + 1;
             newborrow = 1;
         }
         else
@@ -247,7 +247,7 @@ vector<int> subtractBignum(vector<int> num1, vector<int> num2)
         }
         temp -= (num2.at(i) + borrow);
         borrow = newborrow;
-        result.push_back((int) temp);
+        result.push_back((unsigned) temp);
     }
         
     if (num1.size() > limit)
@@ -257,7 +257,7 @@ vector<int> subtractBignum(vector<int> num1, vector<int> num2)
             temp = num1.at(i);
             if (num1.at(i) < borrow)
             {
-                temp += INT_MAX + 1;
+                temp += UINT_MAX + 1;
                 newborrow = 1;
             }
             else
@@ -266,7 +266,7 @@ vector<int> subtractBignum(vector<int> num1, vector<int> num2)
             }
             temp -= borrow;
             borrow = newborrow;
-            result.push_back((int) temp);
+            result.push_back((unsigned) temp);
             i++;
         }
     }
@@ -281,9 +281,9 @@ vector<int> subtractBignum(vector<int> num1, vector<int> num2)
 
 }
 
-vector <int> multiplyBignum(vector <int> num1, vector <int> num2)
+vector <unsigned> multiplyBignum(vector <unsigned> num1, vector <unsigned> num2)
 {
-    vector <int> result;
+    vector <unsigned> result;
     //using vedic math urdhwatiryak method
 
     //first pad zeros to make the input vectors equal sized
@@ -296,16 +296,16 @@ vector <int> multiplyBignum(vector <int> num1, vector <int> num2)
         while (num2.size() != num1.size()) num1.push_back(0);
     }
 
-    int numOps = 0;
+    unsigned numOps = 0;
     for (int i = 0; i < ((2 * num1.size()) - 1); i++)
     {
         if (i < num1.size()) numOps++;
         else numOps--;
         
-        vector <int> intermediate;
+        vector <unsigned> unsignedermediate;
 
-        int index1;
-        int index2;
+        unsigned index1;
+        unsigned index2;
         if (i < num1.size())
         {
             index1 = 0;
@@ -320,32 +320,32 @@ vector <int> multiplyBignum(vector <int> num1, vector <int> num2)
 
         for (int j = 0; j < numOps; j++)
         {
-            long temp = (long) num1.at(index1) * num2.at(index2);
-            vector <int> tmp;
-            long base = INT_MAX;
+            unsigned long temp = (unsigned long) num1.at(index1) * num2.at(index2);
+            vector <unsigned> tmp;
+            unsigned long base = UINT_MAX;
             base++;
-            if (!(temp / base == 0 && temp % base == 0)) tmp.push_back((int) (temp % base));
-            if (temp / base != 0) tmp.push_back((int) (temp / base));
-            //cout << "tmp:"<<temp%(INT_MAX+1)<<" "<<temp/(INT_MAX+1)<<" "<<temp<<" "<<num1.at(index1)<<" "<<num2.at(index2)<<" "<<temp-(temp/(INT_MAX+1))*(INT_MAX+1)<<endl;
-            intermediate = addBignum(tmp, intermediate);
+            if (!(temp / base == 0 && temp % base == 0)) tmp.push_back((unsigned) (temp % base));
+            if (temp / base != 0) tmp.push_back((unsigned) (temp / base));
+            //cout << "tmp:"<<temp%(UINT_MAX+1)<<" "<<temp/(UINT_MAX+1)<<" "<<temp<<" "<<num1.at(index1)<<" "<<num2.at(index2)<<" "<<temp-(temp/(UINT_MAX+1))*(UINT_MAX+1)<<endl;
+            unsignedermediate = addBignum(tmp, unsignedermediate);
         
             //cout<<index1<<","<<index2<<endl;
 
             index1++;
             index2--;
         }
-        //shift intermediate to left by i ints
-        if (intermediate.size() > 0)
+        //shift unsignedermediate to left by i unsigneds
+        if (unsignedermediate.size() > 0)
         {
             for (int j = 0; j < i; j++) 
-                intermediate.insert(intermediate.begin(), 1, 0);
+                unsignedermediate.insert(unsignedermediate.begin(), 1, 0);
         }
 
-        //for (int j = 0; j < intermediate.size(); j++)
-        //    cout<<intermediate.at(j)<<"-";
+        //for (int j = 0; j < unsignedermediate.size(); j++)
+        //    cout<<unsignedermediate.at(j)<<"-";
         //cout<<endl;
 
-        result = addBignum(intermediate, result);
+        result = addBignum(unsignedermediate, result);
         //for (int j = 0; j < result.size(); j++)
         //    cout<<result.at(j)<<"=";
         //cout<<endl;
@@ -366,14 +366,14 @@ vector <int> multiplyBignum(vector <int> num1, vector <int> num2)
     return result;
 }
 
-vector <int> andBignum(vector <int> num1, vector <int> num2)
+vector <unsigned> andBignum(vector <unsigned> num1, vector <unsigned> num2)
 {
-    vector <int> result;
-    int limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    vector <unsigned> result;
+    unsigned limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
 
     for (int i = 0; i < limit; i++)
     {
-        int temp = num1.at(i) & num2.at(i);
+        unsigned temp = num1.at(i) & num2.at(i);
         result.push_back(temp);
     }
 
@@ -387,15 +387,15 @@ vector <int> andBignum(vector <int> num1, vector <int> num2)
 
 }
 
-vector <int> orBignum(vector <int> num1, vector <int> num2)
+vector <unsigned> orBignum(vector <unsigned> num1, vector <unsigned> num2)
 {
-    vector <int> result;
-    int limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    vector <unsigned> result;
+    unsigned limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
     int i;
 
     for (i = 0; i < limit; i++)
     {
-        int temp = num1.at(i) | num2.at(i);
+        unsigned temp = num1.at(i) | num2.at(i);
         result.push_back(temp);
     }
 
@@ -425,15 +425,15 @@ vector <int> orBignum(vector <int> num1, vector <int> num2)
 
 }
 
-vector <int> xorBignum(vector <int> num1, vector <int> num2)
+vector <unsigned> xorBignum(vector <unsigned> num1, vector <unsigned> num2)
 {
-    vector <int> result;
-    int limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    vector <unsigned> result;
+    unsigned limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
     int i;
 
     for (i = 0; i < limit; i++)
     {
-        int temp = num1.at(i) ^ num2.at(i);
+        unsigned temp = num1.at(i) ^ num2.at(i);
         result.push_back(temp);
     }
 
@@ -463,21 +463,59 @@ vector <int> xorBignum(vector <int> num1, vector <int> num2)
 
 }
 
+vector <unsigned> notBignum(vector <unsigned> num1)
+{
+    vector <unsigned> result;
+    
+    for (int i = 0; i < num1.size(); i++)
+    {
+        unsigned temp = ~num1.at(i);
+        result.push_back(temp);
+    }
 
+    //just for sanity, though not really required
+    while (result.size() != 0 && result.back() == 0)
+    {
+        result.pop_back();
+    }
+    return result;
+}
 
 
 int main()
 {
     for (int i = 0; i < 100; i++)
     {
-        vector <int> oper1 = string2bignum();
-        vector <int> oper2 = string2bignum();
-        vector <int> ans = string2bignum();
+        vector <unsigned> num = string2bignum();
+        bignum2string(num);
+        vector <unsigned> ans = string2bignum();
         ans.clear();
+        ans = notBignum(num);
+        bignum2string(ans);
+    }
+    return 0;
+}
+
+int andmain()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        vector <unsigned> oper1 = string2bignum();
+        vector <unsigned> oper2 = string2bignum();
+        vector <unsigned> ans1 = string2bignum();
+        vector <unsigned> ans2 = string2bignum();
+        vector <unsigned> ans3 = string2bignum();
+        ans1.clear();
+        ans2.clear();
+        ans3.clear();
         bignum2string(oper1);
         bignum2string(oper2);
-        ans = xorBignum(oper1, oper2);
-        bignum2string(ans);
+        ans1 = andBignum(oper1, oper2);
+        ans2 = orBignum(oper1, oper2);
+        ans3 = xorBignum(oper1, oper2);
+        bignum2string(ans1);
+        bignum2string(ans2);
+        bignum2string(ans3);
     }
     return 0;
 }
@@ -486,9 +524,9 @@ int multmain()
 {
     for (int i = 0; i < 100; i++)
     {
-        vector <int> oper1 = string2bignum();
-        vector <int> oper2 = string2bignum();
-        vector <int> ans = string2bignum();
+        vector <unsigned> oper1 = string2bignum();
+        vector <unsigned> oper2 = string2bignum();
+        vector <unsigned> ans = string2bignum();
         ans.clear();
         bignum2string(oper1);
         bignum2string(oper2);
@@ -501,13 +539,13 @@ int multmain()
     return 0;
 }
 
-int mainForSub()
+int submain()
 {
     for (int i = 0; i < 100; i++)
     {
-        vector <int> oper1 = string2bignum();
-        vector <int> oper2 = string2bignum();
-        vector <int> ans = string2bignum();
+        vector <unsigned> oper1 = string2bignum();
+        vector <unsigned> oper2 = string2bignum();
+        vector <unsigned> ans = string2bignum();
         ans.clear();
         bignum2string(oper1);
         bignum2string(oper2);
@@ -525,14 +563,14 @@ int mainForSub()
     }
 }
 
-int mainForAdd()
+int addmain()
 {
     int i = 0;
-    vector<int> sum;
+    vector<unsigned> sum;
     //cout<<INT_MAX<<" "<<sizeof(int)<<" "<<sizeof(long)<<LONG_MAX<<endl;
     while (i < 100)
     {
-        vector <int> oper = string2bignum();
+        vector <unsigned> oper = string2bignum();
         sum = addBignum(oper, sum);
         //cout<<sum.size();
         bignum2string(oper);
