@@ -481,8 +481,49 @@ vector <unsigned> notBignum(vector <unsigned> num1)
     return result;
 }
 
+bool equalBignum(vector <unsigned> num1, vector <unsigned> num2)
+{
+    //removing zero padding, just in case
+    while (num1.size() != 0 && num1.back() == 0)
+    {
+        num1.pop_back();
+    }
+    while (num2.size() != 0 && num2.back() == 0)
+    {
+        num2.pop_back();
+    }
+
+    if (num1.size() != num2.size()) return false;
+
+    for (int i = 0; i < num1.size(); i++)
+    {
+        if (num1.at(i) != num2.at(i)) return false;
+    }
+    
+    return true;
+}
 
 int main()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        vector <unsigned> num1 = string2bignum();
+        vector <unsigned> num2 = string2bignum();
+        bignum2string(num1);
+        bignum2string(num2);
+        int ans = -1;
+        cin >> ans;
+        bool ans1 = equalBignum(num1, num2);
+        if (ans1) ans = 1;
+        else ans = 0;
+        cout << ans <<endl;
+ 
+    }
+
+    return 0;
+}
+
+int notmain()
 {
     for (int i = 0; i < 100; i++)
     {
