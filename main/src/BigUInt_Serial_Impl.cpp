@@ -155,7 +155,7 @@ BigUInt_Serial_Impl::operator==(const BigUInt_Inf * op2)
 string
 BigUInt_Serial_Impl::ToString()
 {
-	return BigUInt_Utils::VectorToSstring(buf);
+	return BigUInt_Utils::VectorToString(buf);
 }
 
 BigUInt_Serial_Impl::~BigUInt_Serial_Impl()

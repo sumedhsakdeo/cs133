@@ -12,8 +12,6 @@ BigUInt_Utils::StringToVector(const string& str)
 {
 	long base;
     vector<unsigned int> representation;
-    long dividend = 0;
-    string quotient;
     string input(str); 
 
     base = UINT_MAX;
@@ -113,13 +111,14 @@ add(unsigned num, string* str)
 }
 
 string
-BigUInt_Utils::VectorToSstring(const vector<unsigned int>& buf)
+BigUInt_Utils::VectorToString(const vector<unsigned int>& buf)
 {
     if (buf.size() == 0) {
         return string();
     }
 
-    reverse(buf.begin(), buf.end());
+    vector<unsigned int> num = buf; 
+    reverse(num.begin(), num.end());
 
     unsigned long base = UINT_MAX;
     base++;
