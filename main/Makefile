@@ -7,7 +7,8 @@ serial: src/BigUInt_Serial_Impl.cpp src/BigUInt.cpp
 	g++ -c -Iinc/ src/BigUInt_Serial_Impl.cpp -o obj/BigUInt_Serial.o
 	g++ -c -Iinc/ src/BigUInt.cpp -o obj/BigInt.o
 
-parallel:
+parallel: src/OperationThread.cpp src/ThreadPool.cpp src/Parallelizer.cpp src/Thread.cpp
+	g++ -c -Iinc/ src/Thread.cpp -o obj/Thread.o
 	g++ -c -Iinc/ src/OperationThread.cpp -o obj/OperationThread.o
 	g++ -c -Iinc/ src/ThreadPool.cpp -o obj/ThreadPool.o
 	g++ -c -Iinc/ src/Parallelizer.cpp -o obj/Parallelizer.o

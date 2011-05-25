@@ -1,5 +1,44 @@
 #include    "ThreadPool.h"
 
+// Global static pointer used to ensure a single instance of the class
+template <class T>
+ThreadPool<T>* ThreadPool<T>::singletonInstance = NULL; 
+
+// Get the singleton instance of the class
+template <class T>
+ThreadPool<T>* ThreadPool<T> :: getInstance()    {
+   if (!singletonInstance)  {
+        singletonInstance = new ThreadPool<T>();
+   }
+   return singletonInstance;
+}
+
+template <class T>
+void
+ThreadPool<T>  ::  init() {
+    
+    for (int i = 0; i < POOL_CNT; i++)    {
+        struct thread_node *tmp = new struct thread_node;
+        tmp->tid    = i;
+        tmp->thread = new T(i);
+        tmp->next  = free_list;
+        free_list = tmp;
+    }
+
+}
+
+//  ThreadPool constructor
+template <class T>
+ThreadPool<T> :: ThreadPool()   {
+   pthread_cond_init(&cond_free_list, NULL);
+   init();
+}
+
+//  ThreadPool destructore
+template <class T>
+ThreadPool<T> :: ~ThreadPool()   {
+   pthread_cond_destroy(&cond_free_list);
+}
 //  Pick up the next free thread from the pool
 template <class T>
 T*
