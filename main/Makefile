@@ -14,10 +14,10 @@ parallel: src/OperationThread.cpp src/ThreadPool.cpp src/Parallelizer.cpp src/Th
 	g++ -c -Iinc/ src/Parallelizer.cpp -o obj/Parallelizer.o
 
 
-test:
-	g++ -c -Iinc/ test/s_add.cpp -o obj/s_add.o
+test: parallel test/*.cpp
+	g++ -Iinc/ test/p_add.cpp -o obj/p_add
 	cd obj
-	./s_add
+	./p_add
 	cd ..    
 
 clean:
