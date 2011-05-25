@@ -227,3 +227,8 @@ BigUInt::SetBui(BigUInt_Inf *b)
     bui = b;
 }
 
+string
+ToString()
+{
+	return bui->ToString();
+}

@@ -1,5 +1,5 @@
 #include "BigUInt_Serial_Impl.h"
-#include	"BigUInt_Utils.h"
+#include "BigUInt_Utils.h"
 
 using namespace std;
 
@@ -8,9 +8,9 @@ BigUInt_Serial_Impl::BigUInt_Serial_Impl()
 	
 }
 
-BigUInt_Serial_Impl::BigUInt_Serial_Impl(const string &str)
+BigUInt_Serial_Impl::BigUInt_Serial_Impl(const string& str)
 {
-	this->buf = BigUInt_Utils::string_to_vector(str);	
+	this->buf = BigUInt_Utils::StringToVector(str);	
 }
 
 BigUInt_Serial_Impl::BigUInt_Serial_Impl(const BigUInt_Serial_Impl &to_copy)
@@ -152,8 +152,14 @@ BigUInt_Serial_Impl::operator==(const BigUInt_Inf * op2)
     return BigUInt_Utils::EqualBignum(num1, num2);
 }
 
+string
+BigUInt_Serial_Impl::ToString()
+{
+	return BigUInt_Utils::VectorToSstring(buf);
+}
+
 BigUInt_Serial_Impl::~BigUInt_Serial_Impl()
 {
-
+	buf.clear();
 }
 

@@ -2,7 +2,7 @@
 #define _BIG_U_INT_H_
 
 #include "BigUInt_Inf.h"
-#include	<string>
+#include <string>
 
 class BigUInt {
 private:
@@ -10,6 +10,7 @@ private:
 public:
     BigUInt();
     BigUInt(const std::string&);
+	BigUInt operator=(const BigUInt &);
     BigUInt operator+(const BigUInt &);
     BigUInt operator-(const BigUInt &);
     BigUInt operator*(const BigUInt &);
@@ -21,6 +22,7 @@ public:
     BigUInt operator^(const BigUInt &);
     BigUInt operator~();
     bool operator==(const BigUInt &); 
+	std::string ToString();
     ~BigUInt();
 
 private:
