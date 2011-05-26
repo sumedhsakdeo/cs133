@@ -24,6 +24,8 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
     for (int i=0; i < oper1.size(); i++)    {
 
         pthread_cond_t      cond_callback = PTHREAD_COND_INITIALIZER;
+        pthread_mutex_t     my_lock       = PTHREAD_MUTEX_INITIALIZER;    
+
         OperationThread<T, M> *ot = tp->getFreeThread();
         ot->setOp1(oper1[i]);
         ot->setOp2(oper2[i]);
@@ -32,10 +34,15 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
         ot->setCondCallback(&cond_callback);
 
         pthread_cond_signal(ot->getCondSchedule());
-        pthread_cond_wait(&cond_callback, NULL); 
+
+        pthread_mutex_lock (&my_lock);
+        pthread_cond_wait(&cond_callback, &my_lock); 
+        pthread_mutex_unlock (&my_lock);
 
         result[i] = ot->getResult();
-        tp->addThreadFreeList(ot);
+        tp->addThreadFreeList(ot->getThreadID());
+        pthread_mutex_destroy (&my_lock);
+        pthread_cond_destroy (&cond_callback);
     }
 
     return result;

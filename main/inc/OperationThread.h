@@ -43,6 +43,15 @@ public:
 };
 
 template <class T, class M>
+OperationThread<T, M>  ::  OperationThread(int tid):Thread(tid)    {
+}
+
+template <class T, class M>
+OperationThread<T, M>  ::  ~OperationThread()    {
+    //Thread::~Thread();
+}
+
+template <class T, class M>
 inline T
 OperationThread<T, M>  ::  getOp1()    {
     return this->op1;
