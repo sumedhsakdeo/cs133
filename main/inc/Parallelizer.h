@@ -30,7 +30,7 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
         OperationThread<T, M> *ot;
         while ((ot=tp->getFreeThread()) == NULL) {
            Parallelizer::resultCollector<T,M>(result, false); 
-           pthread_yield();
+        //   pthread_yield();
         }
         ot->setOp1(oper1[i]);
         ot->setOp2(oper2[i]);
@@ -40,7 +40,7 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
 
         while (ot->getThreadState() == THREAD_SCHED) {
             pthread_cond_signal(ot->getCondSchedule());
-            pthread_yield();
+         //   pthread_yield();
         }
 
     }

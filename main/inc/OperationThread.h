@@ -133,8 +133,9 @@ OperationThread<T, M> :: run()   {
         case XOR:
             this->result = (M)this->op1 ^ (M)this->op2;
             break;
-
-
+        case NOT:
+            this->result = (M)~this->op1;
+            break;
     }
     this->setThreadState(THREAD_DONE);
 }

@@ -8,7 +8,8 @@ typedef enum {
         DIV,
         AND,
         OR,
-        XOR
+        XOR,
+        NOT
         } OPERATION;
 
 typedef enum {

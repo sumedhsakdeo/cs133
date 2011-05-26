@@ -15,6 +15,7 @@ int main(int argc, char **argv)  {
     ifstream fin(argv[1], ifstream::in);
 
     int i = 0;
+    BigUInt zero("0");
     BigUInt sum("0");
     while (i < 100)
     {
@@ -27,12 +28,20 @@ int main(int argc, char **argv)  {
     string result;
     fin >> result;
     if (!result.compare(sum.ToString())) {
-        cout << "Sum Sucess" << endl;
+        cout << "sum sucess" << endl;
     } else { 
-        cerr << "Sum Failure" << endl;
+        cerr << "sum failure" << endl;
     }
 
-    BigUInt zero("0");
+    BigUInt sub;
+    sub = sum - sum;
+    if (!sub.ToString().compare(zero.ToString())) {
+        cout << "SUB Success" << endl;
+    } else {
+        cerr << "SUB Failure" << endl;
+    }
+
+
     BigUInt anded;
     anded = zero & sum;
     if (!anded.ToString().compare(zero.ToString())) {
@@ -56,6 +65,15 @@ int main(int argc, char **argv)  {
     } else {
         cerr << "XOR Failure" << endl;
     }
+    
+    BigUInt noted("18446744073709551615");
+    noted = ~noted;
+    if (!noted.ToString().compare(zero.ToString())) {
+        cout << "NOT Success" << endl;
+    } else {
+        cerr << "NOT Failure" << endl;
+    }
+
 
 /*    BigUInt op1("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
     BigUInt op2("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
