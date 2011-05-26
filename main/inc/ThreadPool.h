@@ -2,7 +2,7 @@
 #define _INC_THREAD_POOL_H
 
 #include    <pthread.h>
-#define POOL_CNT    10
+#define POOL_CNT    25
 
 //  A class which manages POOL_CNT threads which can be used for performing a
 //  computation.
@@ -24,7 +24,9 @@ public:
     void addThreadFreeList(int);
     //  first parameter: set if all the task_queue is done, and second parameter is true
     std::vector<struct thread_node*>  getDoneThreads(bool&);
-    void addFreeThreads(std::vector<struct thread_node*>);
+    void addFreeThreads(std::vector<struct thread_node*>&);
+
+    ~ThreadPool();
 
 private:
     pthread_cond_t cond_free_list;   //  condition variable to check if free_list is empty.
@@ -32,7 +34,6 @@ private:
 
     ThreadPool();
     void init();
-    ~ThreadPool();
     static ThreadPool<T>* singletonInstance; 
     
     struct thread_node *free_list, *task_queue;
@@ -82,6 +83,18 @@ ThreadPool<T> :: ThreadPool()   {
 //  ThreadPool destructore
 template <class T>
 ThreadPool<T> :: ~ThreadPool()   {
+   struct thread_node *tmp = free_list;
+   while (free_list)    {
+        free_list = free_list->next;
+        delete tmp;
+        tmp = free_list;
+   }
+   tmp = task_queue;
+   while (task_queue)    {
+        task_queue = task_queue->next;
+        delete tmp;
+        tmp = task_queue;
+   }
    pthread_mutex_destroy(&mutex_free_list);
    pthread_cond_destroy(&cond_free_list);
 }
@@ -170,7 +183,7 @@ ThreadPool<T> :: getDoneThreads(bool &allDone)    {
 
 template<class T>
 void
-ThreadPool<T> ::  addFreeThreads(std::vector<struct thread_node*> toAdd) {
+ThreadPool<T> ::  addFreeThreads(std::vector<struct thread_node*> &toAdd) {
     
     for (int i=0; i < toAdd.size(); i++)    {
         if (free_list == NULL)  {            

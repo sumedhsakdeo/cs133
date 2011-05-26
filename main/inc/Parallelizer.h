@@ -14,16 +14,15 @@
 class Parallelizer  {
 public:
     template <class T, class M>
-    static std::vector<M> executeBatchRequest(const std::vector<T>&, const std::vector<T>&, OPERATION, int); 
+    static void executeBatchRequest(const std::vector<T>&, const std::vector<T>&, std::vector<M>&, OPERATION, int); 
     template <class T, class M>
     static void resultCollector(std::vector<M>&, bool);
 };
 
 template <class T, class M> 
-std::vector<M>
-Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vector<T> &oper2, OPERATION op, int limit)    {
+void
+Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vector<T> &oper2, std::vector<M> &result, OPERATION op, int limit)    {
     
-    std::vector<M> result(limit);
     ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
 
     for (int i=0; i < limit; i++)    {
@@ -47,7 +46,6 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
     }
 
     Parallelizer::resultCollector<T, M>(result, true);
-    return result;
 }
 
 //  Result collector which 
@@ -56,8 +54,6 @@ template <class T, class M>
 void
 Parallelizer :: resultCollector(std::vector<M> &result, bool blocking)    {
     
-   //   getdone threads 
-   //   if thread.sz >= 1 and blocking == false return 
    bool allDone = false;
    do   {
        ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();

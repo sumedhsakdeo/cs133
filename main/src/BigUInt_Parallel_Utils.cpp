@@ -22,9 +22,10 @@ BigUInt_Parallel_Utils::AddBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
     uint32_t carry = 0;
     int i;
     vector<uint32_t> result;
-    vector<uint64_t> temp = Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, num2, ADD, limit);
+    vector<uint64_t> temp((num1.size()<num2.size()) ? num2.size() : num1.size());
+    Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, num2, temp, ADD, limit);
     
-    for (i=0; i < limit; i++)   
+/*    for (i=0; i < limit; i++)   
         cout << num1[i] << " ";
     cout << endl;
     for (i=0; i < limit; i++)   
@@ -32,7 +33,7 @@ BigUInt_Parallel_Utils::AddBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
     cout << endl;
     for (i=0; i < limit; i++)   
         cout << temp[i] << " ";
-    cout << endl;
+    cout << endl;*/
  
     for (i = 0; i < limit; i++) {
         temp[i] += carry;
