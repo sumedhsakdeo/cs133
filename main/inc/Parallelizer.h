@@ -11,25 +11,22 @@
 
 #include "types.h"
 
-#define PAUSE 1
-
 class Parallelizer  {
 public:
     template <class T, class M>
-    static std::vector<M> executeBatchRequest(const std::vector<T>&, const std::vector<T>&, OPERATION); 
+    static std::vector<M> executeBatchRequest(const std::vector<T>&, const std::vector<T>&, OPERATION, int); 
     template <class T, class M>
     static void resultCollector(std::vector<M>&, bool);
 };
 
 template <class T, class M> 
 std::vector<M>
-Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vector<T> &oper2, OPERATION op)    {
+Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vector<T> &oper2, OPERATION op, int limit)    {
     
-    std::vector<M> result(oper1.size());
+    std::vector<M> result(limit);
     ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
-    int count_max = oper1.size();
 
-    for (int i=0; i < oper1.size(); i++)    {
+    for (int i=0; i < limit; i++)    {
 
         OperationThread<T, M> *ot;
         while ((ot=tp->getFreeThread()) == NULL) {

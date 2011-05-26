@@ -1,7 +1,9 @@
 #include "BigUInt.h"
 #include "BigUInt_Serial_Impl.h"
+#include "BigUInt_Parallel_Impl.h"
 
-#define SERIAL 1
+//#define SERIAL   1
+#define PARALLEL 1
 
 using namespace std;
 
@@ -19,7 +21,7 @@ BigUInt::BigUInt(const string &str)
 #ifdef SERIAL
     bui = new BigUInt_Serial_Impl(str);
 #elif PARALLEL
-    bui = new BigUInt_Parallel_Impl();
+    bui = new BigUInt_Parallel_Impl(str);
 #endif
 }
 
