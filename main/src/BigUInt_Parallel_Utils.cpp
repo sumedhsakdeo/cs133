@@ -80,49 +80,63 @@ BigUInt_Parallel_Utils::SubtractBignum(vector<uint32_t>& num1, vector<uint32_t>&
     vector<uint32_t> result;
     uint32_t borrow = 0;
     uint32_t newborrow = 0;
-    uint64_t temp;
-    uint32_t limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    uint32_t limit = MIN(num1.size(),num2.size());
+    vector<int64_t> temp(MAX(num1.size(),num2.size()));
+    bool    sign = false;
     int i;
 
-    //just checking that num1 > num2, else return empty
+    //just checking that num1 < num2, swapping and setting sign flag
     if (num1.size() < num2.size()) {
-        return result;
+        num1.swap(num2);
+        sign = true;
     }
 
+    //just checking if num1.sz == num2.sz but there num1 MSB < num2 MSB, swapping and setting sign flag
     if (num1.size() == num2.size()
         && num1.at(num1.size() - 1) < num2.at(num2.size() - 1)) {
-        return result;
+        num1.swap(num2);
+        sign = true;
     }
+    
+    Parallelizer::executeBatchRequest<uint32_t,int64_t>(num1, num2, temp, SUB, limit);
+   /* 
+    for (i=0; i < limit; i++)   
+        cout << num1[i] << " ";
+    cout << endl;
+    for (i=0; i < limit; i++)   
+        cout << num2[i] << " ";
+    cout << endl;
+    for (i=0; i < limit; i++)   
+        cout << temp[i] << " ";
+    cout << endl;*/
 
     for (i = 0; i < limit; i++) {
-        temp = num1.at(i);
-
-        if (num1.at(i) < (num2.at(i) + borrow)) {
-            temp += UINT_MAX + 1;
+        if (temp[i] < 0)    {
+            temp[i] += UINT_MAX + 1;
             newborrow = 1;
-        } else {
+        } else  {
             newborrow = 0;
         }
 
-        temp -= (num2.at(i) + borrow);
+        temp[i] -= borrow;
         borrow = newborrow;
-        result.push_back((uint32_t) temp);
+        result.push_back((uint32_t) temp[i]);
     }
         
     if (num1.size() > limit) {
         while (i < num1.size()) {
-            temp = num1.at(i);
+            temp[i] = num1.at(i);
 
             if (num1.at(i) < borrow) {
-                temp += UINT_MAX + 1;
+                temp[i] += UINT_MAX + 1;
                 newborrow = 1;
             } else {
                 newborrow = 0;
             }
 
-            temp -= borrow;
+            temp[i] -= borrow;
             borrow = newborrow;
-            result.push_back((uint32_t) temp);
+            result.push_back((uint32_t) temp[i]);
             i++;
         }
     }
@@ -303,12 +317,15 @@ BigUInt_Parallel_Utils::XorBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
 vector<uint32_t> 
 BigUInt_Parallel_Utils::NotBignum(vector<uint32_t>& num1)
 {
-    vector <uint32_t> result;
+    vector <uint32_t> result(num1.size());
+    //  second vector argument is dummy and shall not be used.
+    Parallelizer::executeBatchRequest<uint32_t,uint32_t>(num1, num1, result, NOT, num1.size());
     
-    for (int i = 0; i < num1.size(); i++) {
+/*    for (int i = 0; i < num1.size(); i++) {
         uint32_t temp = ~num1.at(i);
         result.push_back(temp);
     }
+ */
 
     //just for sanity, though not really required
     while (result.size() != 0 && result.back() == 0) {

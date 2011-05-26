@@ -77,14 +77,8 @@ BigUInt_Utils::SubtractBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
     int i;
 
     //just checking that num1 > num2, else return empty
-    if (num1.size() < num2.size()) {
+    if (LessThan(num1, num2))
         return result;
-    }
-
-    if (num1.size() == num2.size()
-        && num1.at(num1.size() - 1) < num2.at(num2.size() - 1)) {
-        return result;
-    }
 
     for (i = 0; i < limit; i++) {
         temp = num1.at(i);
