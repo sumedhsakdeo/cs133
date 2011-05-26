@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <string>
+extern "C" {
+#include <stdint.h>
+}
 
 class BigUInt_Utils	{
 public:
@@ -16,6 +19,8 @@ public:
     static bool EqualBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> Lshift(std::vector<unsigned>& num1, const unsigned& shift);
     static std::vector<unsigned> Rshift(std::vector<unsigned>& num1, const unsigned& shift);
+    static bool GreaterThan(std::vector<uint32_t>& num1, std::vector<uint32_t>& num2);
+    static bool LessThan(std::vector<uint32_t>& num1, std::vector<uint32_t>& num2);
 };
 
 #endif //_BIG_INT_UTILS_H_

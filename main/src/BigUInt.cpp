@@ -2,7 +2,7 @@
 #include "BigUInt_Serial_Impl.h"
 #include "BigUInt_Parallel_Impl.h"
 
-//#define SERIAL   1
+/#define SERIAL   1
 #define PARALLEL 1
 
 using namespace std;
@@ -151,7 +151,7 @@ BigUInt::operator>>(const unsigned int& op2)
     tempbui = new BigUInt_Parallel_Impl();
 #endif
 
-    tempbui = bui->operator<<(op2);
+    tempbui = bui->operator>>(op2);
 
     BigUInt temp;
     temp.SetBui(tempbui);
