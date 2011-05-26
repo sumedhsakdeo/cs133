@@ -249,6 +249,32 @@ BigUInt::operator==(const BigUInt& op2)
     return (bui->operator==(op2.bui));
 }
 
+bool
+BigUInt::operator>(const BigUInt& op2)
+{
+    BigUInt_Inf *tempbui;    
+#if SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    return (bui->operator>(op2.bui));
+}
+
+bool
+BigUInt::operator<(const BigUInt& op2)
+{
+    BigUInt_Inf *tempbui;    
+#if SERIAL
+    tempbui = new BigUInt_Serial_Impl();
+#elif PARALLEL
+    tempbui = new BigUInt_Parallel_Impl();
+#endif
+
+    return (bui->operator<(op2.bui));
+}
+
 void
 BigUInt::SetBui(BigUInt_Inf *b)
 {

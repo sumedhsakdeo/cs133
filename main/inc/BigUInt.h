@@ -22,6 +22,8 @@ public:
     BigUInt operator^(const BigUInt &);
     BigUInt operator~();
     bool operator==(const BigUInt &); 
+    bool operator>(const BigUInt &);
+    bool operator<(const BigUInt &);
 	std::string ToString();
     ~BigUInt();
 

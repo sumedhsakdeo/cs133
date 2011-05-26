@@ -29,6 +29,8 @@ public:
     BigUInt_Inf* operator^(const BigUInt_Inf *);
     BigUInt_Inf* operator~();
     bool operator==(const BigUInt_Inf *);
+    bool operator>(const BigUInt_Inf *);
+    bool operator<(const BigUInt_Inf *);
 	std::string ToString();
     virtual ~BigUInt_Parallel_Impl();
 };

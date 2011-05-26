@@ -341,6 +341,62 @@ BigUInt_Parallel_Utils::EqualBignum(vector<uint32_t>& num1, vector<uint32_t>& nu
     return true;
 }
 
+bool
+BigUInt_Parallel_Utils::GreaterThan(vector<uint32_t>& num1, vector<uint32_t>& num2)
+{
+    while (num1.size() != 0 && num1.back() == 0) {
+        num1.pop_back();
+    }
+
+    while (num2.size() != 0 && num2.back() == 0) {
+        num2.pop_back();
+    }
+
+    if (num1.size() < num2.size()) {
+        return false;
+    } else if (num1.size() > num2.size()) {
+        return true;
+    }
+
+    for (int i = num1.size() - 1; i >= 0; --i) {
+        if (num1.at(i) < num2.at(i)) {
+            return false;
+        } else if (num1.at(i) > num2.at(i)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool
+BigUInt_Parallel_Utils::LessThan(vector<uint32_t>& num1, vector<uint32_t>& num2)
+{
+    while (num1.size() != 0 && num1.back() == 0) {
+        num1.pop_back();
+    }
+
+    while (num2.size() != 0 && num2.back() == 0) {
+        num2.pop_back();
+    }
+
+    if (num1.size() > num2.size()) {
+        return false;
+    } else if (num1.size() < num2.size()) {
+        return true;
+    }
+
+    for (int i = num1.size() - 1; i >= 0; --i) {
+        if (num1.at(i) > num2.at(i)) {
+            return false;
+        } else if (num1.at(i) < num2.at(i)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 vector<uint32_t>
 BigUInt_Parallel_Utils::Lshift(vector<uint32_t>& num1, const uint32_t& shift)
 {

@@ -21,6 +21,8 @@ public:
     virtual BigUInt_Inf* operator^(const BigUInt_Inf *) = 0;
     virtual BigUInt_Inf* operator~() = 0;
     virtual bool operator==(const BigUInt_Inf *) = 0;
+    virtual bool operator>(const BigUInt_Inf *) = 0;
+    virtual bool operator<(const BigUInt_Inf *) = 0;
 	virtual std::string ToString() = 0;
     virtual ~BigUInt_Inf() {};
 };

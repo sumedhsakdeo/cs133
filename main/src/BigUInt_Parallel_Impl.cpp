@@ -165,6 +165,26 @@ BigUInt_Parallel_Impl::operator==(const BigUInt_Inf * op2)
     return BigUInt_Parallel_Utils::EqualBignum(num1, num2);
 }
 
+bool
+BigUInt_Parallel_Impl::operator>(const BigUInt_Inf * op2)
+{
+    const BigUInt_Parallel_Impl* sop2 = dynamic_cast<const BigUInt_Parallel_Impl *>(op2);
+    vector<uint32_t> num1 = buf;
+    vector<uint32_t> num2 = sop2->buf;
+
+    return BigUInt_Parallel_Utils::GreaterThan(num1, num2);
+}
+
+bool
+BigUInt_Parallel_Impl::operator<(const BigUInt_Inf * op2)
+{
+    const BigUInt_Parallel_Impl* sop2 = dynamic_cast<const BigUInt_Parallel_Impl *>(op2);
+    vector<uint32_t> num1 = buf;
+    vector<uint32_t> num2 = sop2->buf;
+
+    return BigUInt_Parallel_Utils::LessThan(num1, num2);
+}
+
 string
 BigUInt_Parallel_Impl::ToString()
 {
