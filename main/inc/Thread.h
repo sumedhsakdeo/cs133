@@ -9,13 +9,13 @@ class Thread    {
 
 private:
     
-    pthread_t   thread;             //  actual thread
-    int         ID;                 //  ID known to application like ThreadPool
-    bool        busy;               //  thread is busy
-    pthread_mutex_t  busyLock;   //  thread in THREAD_RUNNING state
-    pthread_cond_t cond_schedule;   //  condition variable of each thread.
-    pthread_cond_t *cond_callback;  //  condition variable of callback.
-    THREAD_STATE   state;           //  stores the current thread state
+    pthread_t   thread;               //  actual thread
+    int         ID;                   //  ID known to application like ThreadPool
+    bool        busy;                 //  thread is busy
+    pthread_mutex_t  busyLock;        //  thread in THREAD_RUNNING state
+    pthread_cond_t cond_schedule;     //  condition variable of each thread.
+    pthread_cond_t *cond_callback;    //  condition variable of callback.
+    THREAD_STATE   state;             //  stores the current thread state
 
 public:
     
@@ -37,7 +37,7 @@ public:
     //  getter condition variable might be used for signaling
     pthread_cond_t*   getCondSchedule();
 
-    //  getter setter condition variable might be used for callback
+    //  setter condition variable might be used for callback
     void  setCondCallback(pthread_cond_t*);
 
     //  entry function start
@@ -48,7 +48,6 @@ public:
     //  run method for each thread to execute when triggered
     virtual void      run() = 0;
     
-
 };
 
 Thread  ::  Thread(int ID)    {
@@ -117,22 +116,23 @@ Thread  :: start(void *self) {
     Thread *t = (Thread*) self;
 
     while(1)    {
+        pthread_mutex_lock(&t->busyLock);
+        // t->state = THREAD_WAITING;
         pthread_cond_wait(&t->cond_schedule, &t->busyLock);
         switch (t->getThreadState())   {
             case THREAD_STOP:
                 exitFlag = true;
                 t->state = THREAD_STOP;
-                pthread_mutex_unlock(&t->busyLock);
                 break;
             case THREAD_SCHED:
                 t->state = THREAD_RUNNING;
                 t->run();
-                pthread_cond_signal(t->cond_callback);
                 break;
         }
+        pthread_cond_signal(t->cond_callback);
+        pthread_mutex_unlock(&t->busyLock);
         if  (exitFlag)
             break;
-        t->state = THREAD_WAITING;
     }
     
 }

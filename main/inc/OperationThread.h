@@ -43,6 +43,15 @@ public:
 };
 
 template <class T, class M>
+OperationThread<T, M>  ::  OperationThread(int tid):Thread(tid)    {
+}
+
+template <class T, class M>
+OperationThread<T, M>  ::  ~OperationThread()    {
+    //Thread::~Thread();
+}
+
+template <class T, class M>
 inline T
 OperationThread<T, M>  ::  getOp1()    {
     return this->op1;
@@ -82,6 +91,22 @@ template <class T, class M>
 inline void
 OperationThread<T, M>  ::  setOperation(OPERATION operation)  {
    this->operation = operation;
+}
+
+
+template <class T, class M>
+void
+OperationThread<T, M> :: run()   {
+    
+    switch (operation)  {
+        case ADD:
+            this->result = this->op1 + this->op2; 
+            break;
+        case SUB:
+            this->result = this->op1 - this->op2;
+            break;
+    }
+
 }
 
 #endif  // _INC_OP_THREAD_H

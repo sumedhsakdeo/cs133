@@ -12,7 +12,6 @@ parallel:
 	g++ -g -c -Iinc/ src/ThreadPool.cpp -o obj/ThreadPool.o
 	g++ -g -c -Iinc/ src/Parallelizer.cpp -o obj/Parallelizer.o
 
-
 test: utils serial
 	#g++ -c -Iinc/ test/s_add.cpp -o obj/s_add.o
 	g++ -g -Iinc/ test/main.cpp obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt.o  -o obj/main
