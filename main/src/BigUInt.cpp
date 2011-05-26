@@ -2,14 +2,19 @@
 #include "BigUInt_Serial_Impl.h"
 #include "BigUInt_Parallel_Impl.h"
 
-/#define SERIAL   1
-#define PARALLEL 1
+#ifndef SERIAL
+#define SERIAL 0
+#endif
+
+#ifndef PARALLEL
+#define PARALLEL 0
+#endif
 
 using namespace std;
 
 BigUInt::BigUInt()
 {
-#ifdef SERIAL
+#if SERIAL
     bui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     bui = new BigUInt_Parallel_Impl();
@@ -18,7 +23,7 @@ BigUInt::BigUInt()
 
 BigUInt::BigUInt(const string &str)
 {
-#ifdef SERIAL
+#if SERIAL
     bui = new BigUInt_Serial_Impl(str);
 #elif PARALLEL
     bui = new BigUInt_Parallel_Impl(str);
@@ -34,7 +39,7 @@ BigUInt
 BigUInt::operator=(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -55,7 +60,7 @@ BigUInt
 BigUInt::operator+(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -73,7 +78,7 @@ BigUInt
 BigUInt::operator-(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -91,7 +96,7 @@ BigUInt
 BigUInt::operator*(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -109,7 +114,7 @@ BigUInt
 BigUInt::operator/(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -127,7 +132,7 @@ BigUInt
 BigUInt::operator<<(const unsigned int& op2)
 {
      BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -145,7 +150,7 @@ BigUInt
 BigUInt::operator>>(const unsigned int& op2)
 {
      BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -163,7 +168,7 @@ BigUInt
 BigUInt::operator&(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -181,7 +186,7 @@ BigUInt
 BigUInt::operator|(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -199,7 +204,7 @@ BigUInt
 BigUInt::operator^(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -217,7 +222,7 @@ BigUInt
 BigUInt::operator~()
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();
@@ -235,7 +240,7 @@ bool
 BigUInt::operator==(const BigUInt& op2)
 {
     BigUInt_Inf *tempbui;    
-#ifdef SERIAL
+#if SERIAL
     tempbui = new BigUInt_Serial_Impl();
 #elif PARALLEL
     tempbui = new BigUInt_Parallel_Impl();

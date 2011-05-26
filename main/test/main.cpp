@@ -142,7 +142,9 @@ main(int argc, char **argv)
         }
 
     }
-
+    
+    fin.close();
+    fout.close();
 
     return 0;
 }

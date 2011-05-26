@@ -115,7 +115,7 @@ string
 Common_Utils::VectorToString(const vector<uint32_t>& buf)
 {
     if (buf.size() == 0) {
-        return string();
+        return string("0");
     }
 
     vector<uint32_t> num = buf; 
