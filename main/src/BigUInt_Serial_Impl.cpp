@@ -1,5 +1,7 @@
 #include "BigUInt_Serial_Impl.h"
+#include "Common_Utils.h"
 #include "BigUInt_Utils.h"
+
 
 using namespace std;
 
@@ -10,7 +12,7 @@ BigUInt_Serial_Impl::BigUInt_Serial_Impl()
 
 BigUInt_Serial_Impl::BigUInt_Serial_Impl(const string& str)
 {
-	this->buf = BigUInt_Utils::StringToVector(str);	
+	this->buf = Common_Utils::StringToVector(str);	
 }
 
 BigUInt_Serial_Impl::BigUInt_Serial_Impl(const BigUInt_Serial_Impl &to_copy)
@@ -164,7 +166,7 @@ BigUInt_Serial_Impl::operator==(const BigUInt_Inf * op2)
 string
 BigUInt_Serial_Impl::ToString()
 {
-	return BigUInt_Utils::VectorToString(buf);
+	return Common_Utils::VectorToString(buf);
 }
 
 BigUInt_Serial_Impl::~BigUInt_Serial_Impl()

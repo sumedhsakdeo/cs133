@@ -6,8 +6,6 @@
 
 class BigUInt_Utils	{
 public:
-    static std::vector<unsigned int> StringToVector(const std::string &);
-    static std::string VectorToString(const std::vector<unsigned int>& buf);
     static std::vector<unsigned> AddBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> SubtractBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> MultiplyBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
