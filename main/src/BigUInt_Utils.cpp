@@ -4,20 +4,23 @@
 #include <algorithm>
 #include <climits>
 #include <cmath>
+extern "C" {
+#include <stdint.h>
+}
 
 using namespace std;
 
-vector<unsigned int>
+vector<uint32_t>
 BigUInt_Utils::StringToVector(const string& str)
 {
-	long base;
-    vector<unsigned int> representation;
+    uint64_t base;
+    vector<uint32_t> representation;
     string input(str); 
 
     base = UINT_MAX;
     base++;
 
-    unsigned long dividend = 0;
+    uint64_t dividend = 0;
     string quotient;
 
     do
@@ -52,7 +55,7 @@ BigUInt_Utils::StringToVector(const string& str)
 }
 
 string
-ltoa(long arg)
+ltoa(uint64_t arg)
 {
     std::string number;
     std::stringstream strstream;
@@ -62,11 +65,11 @@ ltoa(long arg)
 }
 
 void
-mult(const unsigned long num, string* str)
+mult(const uint64_t num, string* str)
 {
-    unsigned long carry = 0;
+    uint64_t carry = 0;
     for (int i = str->length() - 1 ; i >= 0; i--) {
-        unsigned long digit = str->at(i) - 48;
+        uint64_t digit = str->at(i) - 48;
         digit = carry + digit * num;
         carry = digit / 10;
         digit = digit % 10;
@@ -80,13 +83,13 @@ mult(const unsigned long num, string* str)
 }
 
 void
-add(unsigned num, string* str)
+add(uint32_t num, string* str)
 {
-    unsigned i = str->size() - 1;
-    unsigned carry = 0;
+    uint32_t i = str->size() - 1;
+    uint32_t carry = 0;
 
     while (num != 0) {
-        unsigned digit = str->at(i) - 48;
+        uint32_t digit = str->at(i) - 48;
         digit = digit + (num % 10) + carry;
         num = num / 10;
         carry = digit / 10;
@@ -100,7 +103,7 @@ add(unsigned num, string* str)
             str->insert(0, 1, (char) (carry + 48));
             carry = 0;
         } else {
-            unsigned digit = str->at(i) - 48;
+            uint32_t digit = str->at(i) - 48;
             digit += carry;
             carry = digit / 10;
             digit = digit % 10;
@@ -111,16 +114,16 @@ add(unsigned num, string* str)
 }
 
 string
-BigUInt_Utils::VectorToString(const vector<unsigned int>& buf)
+BigUInt_Utils::VectorToString(const vector<uint32_t>& buf)
 {
     if (buf.size() == 0) {
         return string();
     }
 
-    vector<unsigned int> num = buf; 
+    vector<uint32_t> num = buf; 
     reverse(num.begin(), num.end());
 
-    unsigned long base = UINT_MAX;
+    uint64_t base = UINT_MAX;
     base++;
 
     string* output = new string("");
@@ -133,23 +136,23 @@ BigUInt_Utils::VectorToString(const vector<unsigned int>& buf)
     return *output;
 }
 
-vector<unsigned>
-BigUInt_Utils::AddBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+vector<uint32_t>
+BigUInt_Utils::AddBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
-    unsigned limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
-    unsigned long temp = 0;
-    unsigned carry = 0;
+    uint32_t limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    uint64_t temp = 0;
+    uint32_t carry = 0;
     int i;
-    vector<unsigned> result;
+    vector<uint32_t> result;
 
     for (i = 0; i < limit; i++) {
-        temp = (unsigned long) num1.at(i) + num2.at(i) + carry;
+        temp = (uint64_t) num1.at(i) + num2.at(i) + carry;
         carry = 0;
         if (temp > UINT_MAX) {
             temp -= (UINT_MAX + 1);
             carry = 1;
         }
-        result.push_back((unsigned) temp);
+        result.push_back((uint32_t) temp);
     }
 
     if (num1.size() > limit) {
@@ -162,7 +165,7 @@ BigUInt_Utils::AddBignum(vector<unsigned>& num1, vector<unsigned>& num2)
                 carry = 1;
             }
 
-            result.push_back((unsigned) temp);
+            result.push_back((uint32_t) temp);
             i++;
         }
     }
@@ -177,7 +180,7 @@ BigUInt_Utils::AddBignum(vector<unsigned>& num1, vector<unsigned>& num2)
                 carry = 1;
             }
 
-            result.push_back((unsigned) temp);
+            result.push_back((uint32_t) temp);
             i++;
         }
     }
@@ -189,14 +192,14 @@ BigUInt_Utils::AddBignum(vector<unsigned>& num1, vector<unsigned>& num2)
     return result;
 }
 
-vector<unsigned>
-BigUInt_Utils::SubtractBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+vector<uint32_t>
+BigUInt_Utils::SubtractBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
-    vector<unsigned> result;
-    unsigned borrow = 0;
-    unsigned newborrow = 0;
-    unsigned long temp;
-    unsigned limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
+    vector<uint32_t> result;
+    uint32_t borrow = 0;
+    uint32_t newborrow = 0;
+    uint64_t temp;
+    uint32_t limit = (num1.size()>num2.size()) ? num2.size() : num1.size();
     int i;
 
     //just checking that num1 > num2, else return empty
@@ -221,7 +224,7 @@ BigUInt_Utils::SubtractBignum(vector<unsigned>& num1, vector<unsigned>& num2)
 
         temp -= (num2.at(i) + borrow);
         borrow = newborrow;
-        result.push_back((unsigned) temp);
+        result.push_back((uint32_t) temp);
     }
         
     if (num1.size() > limit) {
@@ -237,7 +240,7 @@ BigUInt_Utils::SubtractBignum(vector<unsigned>& num1, vector<unsigned>& num2)
 
             temp -= borrow;
             borrow = newborrow;
-            result.push_back((unsigned) temp);
+            result.push_back((uint32_t) temp);
             i++;
         }
     }
@@ -251,10 +254,10 @@ BigUInt_Utils::SubtractBignum(vector<unsigned>& num1, vector<unsigned>& num2)
 
 }
 
-vector<unsigned>
-BigUInt_Utils::MultiplyBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+vector<uint32_t>
+BigUInt_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
-    vector <unsigned> result;
+    vector <uint32_t> result;
     //using vedic math urdhwatiryak method
 
     //first pad zeros to make the input vectors equal sized
@@ -266,12 +269,12 @@ BigUInt_Utils::MultiplyBignum(vector<unsigned>& num1, vector<unsigned>& num2)
         while (num2.size() != num1.size()) num1.push_back(0);
     }
 
-    unsigned numOps = 0;
+    uint32_t numOps = 0;
     for (int i = 0; i < ((2 * num1.size()) - 1); i++) {
-        vector <unsigned> intermediate;
+        vector <uint32_t> intermediate;
 
-        unsigned index1;
-        unsigned index2;
+        uint32_t index1;
+        uint32_t index2;
 
         (i < num1.size()) ? numOps++ : numOps--;
 
@@ -284,17 +287,17 @@ BigUInt_Utils::MultiplyBignum(vector<unsigned>& num1, vector<unsigned>& num2)
         }
 
         for (int j = 0; j < numOps; j++) {
-            unsigned long temp = (unsigned long) num1.at(index1) * num2.at(index2);
-            vector <unsigned> tmp;
-            unsigned long base = UINT_MAX;
+            uint64_t temp = (uint64_t) num1.at(index1) * num2.at(index2);
+            vector <uint32_t> tmp;
+            uint64_t base = UINT_MAX;
             base++;
 
             if (!(temp / base == 0 && temp % base == 0)) {
-                tmp.push_back((unsigned) (temp % base));
+                tmp.push_back((uint32_t) (temp % base));
             }
 
             if (temp / base != 0) {
-                tmp.push_back((unsigned) (temp / base));
+                tmp.push_back((uint32_t) (temp / base));
             }
 
             intermediate = AddBignum(tmp, intermediate);
@@ -303,7 +306,7 @@ BigUInt_Utils::MultiplyBignum(vector<unsigned>& num1, vector<unsigned>& num2)
             index2--;
         }
 
-        //shift unsignedermediate to left by i unsigneds
+        //shift uint32_termediate to left by i uint32_ts
         if (intermediate.size() > 0) {
             for (int j = 0; j < i; j++) {
                 intermediate.insert(intermediate.begin(), 1, 0);
@@ -325,14 +328,14 @@ BigUInt_Utils::MultiplyBignum(vector<unsigned>& num1, vector<unsigned>& num2)
     return result;
 }
 
-vector<unsigned> 
-BigUInt_Utils::AndBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+vector<uint32_t> 
+BigUInt_Utils::AndBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
-    vector <unsigned> result;
-    unsigned limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    vector <uint32_t> result;
+    uint32_t limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
 
     for (int i = 0; i < limit; i++) {
-        unsigned temp = num1.at(i) & num2.at(i);
+        uint32_t temp = num1.at(i) & num2.at(i);
         result.push_back(temp);
     }
 
@@ -345,15 +348,15 @@ BigUInt_Utils::AndBignum(vector<unsigned>& num1, vector<unsigned>& num2)
     return result;
 }
 
-vector<unsigned>
-BigUInt_Utils::OrBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+vector<uint32_t>
+BigUInt_Utils::OrBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
-    vector <unsigned> result;
-    unsigned limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    vector <uint32_t> result;
+    uint32_t limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
     int i;
 
     for (i = 0; i < limit; i++) {
-        unsigned temp = num1.at(i) | num2.at(i);
+        uint32_t temp = num1.at(i) | num2.at(i);
         result.push_back(temp);
     }
 
@@ -377,15 +380,15 @@ BigUInt_Utils::OrBignum(vector<unsigned>& num1, vector<unsigned>& num2)
     return result;
 }
 
-vector<unsigned>
-BigUInt_Utils::XorBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+vector<uint32_t>
+BigUInt_Utils::XorBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
-    vector <unsigned> result;
-    unsigned limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
+    vector <uint32_t> result;
+    uint32_t limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
     int i;
 
     for (i = 0; i < limit; i++) {
-        unsigned temp = num1.at(i) ^ num2.at(i);
+        uint32_t temp = num1.at(i) ^ num2.at(i);
         result.push_back(temp);
     }
 
@@ -409,13 +412,13 @@ BigUInt_Utils::XorBignum(vector<unsigned>& num1, vector<unsigned>& num2)
     return result;
 }
 
-vector<unsigned> 
-BigUInt_Utils::NotBignum(vector<unsigned>& num1)
+vector<uint32_t> 
+BigUInt_Utils::NotBignum(vector<uint32_t>& num1)
 {
-    vector <unsigned> result;
+    vector <uint32_t> result;
     
     for (int i = 0; i < num1.size(); i++) {
-        unsigned temp = ~num1.at(i);
+        uint32_t temp = ~num1.at(i);
         result.push_back(temp);
     }
 
@@ -428,7 +431,7 @@ BigUInt_Utils::NotBignum(vector<unsigned>& num1)
 }
 
 bool
-BigUInt_Utils::EqualBignum(vector<unsigned>& num1, vector<unsigned>& num2)
+BigUInt_Utils::EqualBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
     //removing zero padding, just in case
     while (num1.size() != 0 && num1.back() == 0){
@@ -450,12 +453,12 @@ BigUInt_Utils::EqualBignum(vector<unsigned>& num1, vector<unsigned>& num2)
     return true;
 }
 
-vector<unsigned>
-BigUInt_Utils::Lshift(vector<unsigned>& num1, const unsigned& shift)
+vector<uint32_t>
+BigUInt_Utils::Lshift(vector<uint32_t>& num1, const uint32_t& shift)
 {
-    vector <unsigned> result;
-    int bitsindigit = sizeof(unsigned) * 8;
-    long mask = pow((double) 2, bitsindigit) - 1;
+    vector <uint32_t> result;
+    int bitsindigit = sizeof(uint32_t) * 8;
+    uint64_t mask = pow((double) 2, bitsindigit) - 1;
 
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
@@ -464,34 +467,34 @@ BigUInt_Utils::Lshift(vector<unsigned>& num1, const unsigned& shift)
         result.push_back(0);
     }
 
-    long temp = 0;
+    uint64_t temp = 0;
     for (int i = 0; i < num1.size(); i++) {
-        temp += (long) ( (long) num1.at(i) << inshift);
-        result.push_back((unsigned) (temp & mask));
+        temp += (uint64_t) ( (uint64_t) num1.at(i) << inshift);
+        result.push_back((uint32_t) (temp & mask));
         temp = temp >> bitsindigit;
     }
 
     if (temp != 0) {
-        result.push_back((unsigned) temp);
+        result.push_back((uint32_t) temp);
     }
 
     return result;
 }
 
-vector<unsigned>
-BigUInt_Utils::Rshift(vector<unsigned>& num1, const unsigned& shift)
+vector<uint32_t>
+BigUInt_Utils::Rshift(vector<uint32_t>& num1, const uint32_t& shift)
 {
-    vector <unsigned> result;
-    int bitsindigit = sizeof(unsigned) * 8;
-    long mask = (long) (pow((double) 2, bitsindigit) - 1) << bitsindigit;
+    vector <uint32_t> result;
+    int bitsindigit = sizeof(uint32_t) * 8;
+    uint64_t mask = (uint64_t) (pow((double) 2, bitsindigit) - 1) << bitsindigit;
 
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
 
-    unsigned long temp = 0;
+    uint64_t temp = 0;
     for (int i = num1.size() - 1; i >= newdigits; i--) {
-        temp += (unsigned long) ( (unsigned long) num1.at(i) << bitsindigit) >> inshift;
-        result.push_back((unsigned) (temp >> bitsindigit));
+        temp += (uint64_t) ( (uint64_t) num1.at(i) << bitsindigit) >> inshift;
+        result.push_back((uint32_t) (temp >> bitsindigit));
         temp = temp << bitsindigit;
     }
     
