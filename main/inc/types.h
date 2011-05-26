@@ -14,6 +14,7 @@ typedef enum {
         THREAD_STOP, 
         THREAD_RUNNING,
         THREAD_WAITING,
+        THREAD_DONE
         } THREAD_STATE;
 
 #endif  //  _INC_TYPES_H_

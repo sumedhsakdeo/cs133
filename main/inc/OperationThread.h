@@ -12,6 +12,7 @@ class OperationThread   : public Thread {
 private:
     T       op1, op2; 
     M       result;
+    int     idx;
     OPERATION operation;
 
 public:
@@ -31,6 +32,11 @@ public:
     // getter setter for operand 2 
     T      getOp2();
     void   setOp2(T op2);
+    
+    // getter setter for index 
+    int     getIdx();
+    void    setIdx(int);
+
 
     //  getter for result
     M      getResult();
@@ -76,6 +82,18 @@ OperationThread<T, M>  ::  setOp2(T op2)    {
 }
 
 template <class T, class M>
+inline int
+OperationThread<T, M> :: getIdx()   {
+    return this->idx;
+}
+
+template <class T, class M>
+inline void
+OperationThread<T, M> :: setIdx(int idx)   {
+    this->idx = idx;
+}
+
+template <class T, class M>
 inline M
 OperationThread<T, M>  ::  getResult()    {
     return this->result;
@@ -98,6 +116,7 @@ template <class T, class M>
 void
 OperationThread<T, M> :: run()   {
     
+    this->setThreadState(THREAD_RUNNING);
     switch (operation)  {
         case ADD:
             this->result = this->op1 + this->op2; 
@@ -106,7 +125,7 @@ OperationThread<T, M> :: run()   {
             this->result = this->op1 - this->op2;
             break;
     }
-
+    this->setThreadState(THREAD_DONE);
 }
 
 #endif  // _INC_OP_THREAD_H

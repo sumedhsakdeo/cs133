@@ -3,6 +3,7 @@
 
 #include    <pthread.h>
 #include    "types.h"
+#include    <iostream>
 
 // Abstract class Thread
 class Thread    {
@@ -14,7 +15,6 @@ private:
     bool        busy;                 //  thread is busy
     pthread_mutex_t  busyLock;        //  thread in THREAD_RUNNING state
     pthread_cond_t cond_schedule;     //  condition variable of each thread.
-    pthread_cond_t *cond_callback;    //  condition variable of callback.
     THREAD_STATE   state;             //  stores the current thread state
 
 public:
@@ -103,11 +103,6 @@ Thread  ::  getCondSchedule()   {
     return &this->cond_schedule;
 }
 
-inline void
-Thread  ::  setCondCallback(pthread_cond_t *cond_callback)  {
-    this->cond_callback = cond_callback;
-}
-
 //  This thread runs infinitely and waits for a signal THREAD_START before it runs.
 void * 
 Thread  :: start(void *self) {
@@ -117,24 +112,22 @@ Thread  :: start(void *self) {
 
     while(1)    {
         pthread_mutex_lock(&t->busyLock);
-        // t->state = THREAD_WAITING;
-        pthread_cond_wait(&t->cond_schedule, &t->busyLock);
+        pthread_cond_wait(t->getCondSchedule(), &t->busyLock);
         switch (t->getThreadState())   {
             case THREAD_STOP:
                 exitFlag = true;
                 t->state = THREAD_STOP;
                 break;
             case THREAD_SCHED:
-                t->state = THREAD_RUNNING;
                 t->run();
                 break;
         }
-        pthread_cond_signal(t->cond_callback);
         pthread_mutex_unlock(&t->busyLock);
         if  (exitFlag)
             break;
     }
-    
+
+    pthread_exit(NULL);
 }
 
 #endif // _INC_THREAD_H_
