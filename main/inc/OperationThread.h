@@ -119,7 +119,7 @@ OperationThread<T, M> :: run()   {
     this->setThreadState(THREAD_RUNNING);
     switch (operation)  {
         case ADD:
-            this->result = this->op1 + this->op2; 
+            this->result = (M)this->op1 + (M)this->op2; 
             break;
         case SUB:
             this->result = this->op1 - this->op2;

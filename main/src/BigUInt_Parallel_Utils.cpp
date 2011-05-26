@@ -10,6 +10,9 @@ extern "C" {
 #include <stdint.h>
 }
 
+//TODO: remove
+#include    <iostream>
+
 using namespace std;
 
 vector<uint32_t>
@@ -21,7 +24,18 @@ BigUInt_Parallel_Utils::AddBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
     vector<uint32_t> result;
     vector<uint64_t> temp = Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, num2, ADD, limit);
     
+    for (i=0; i < limit; i++)   
+        cout << num1[i] << " ";
+    cout << endl;
+    for (i=0; i < limit; i++)   
+        cout << num2[i] << " ";
+    cout << endl;
+    for (i=0; i < limit; i++)   
+        cout << temp[i] << " ";
+    cout << endl;
+ 
     for (i = 0; i < limit; i++) {
+        temp[i] += carry;
         carry = 0;
         if (temp[i] > UINT_MAX) {
             temp[i] -= (UINT_MAX + 1);

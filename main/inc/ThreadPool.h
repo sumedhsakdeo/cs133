@@ -59,6 +59,8 @@ template <class T>
 void
 ThreadPool<T>  ::  init() {
     
+	task_queue = NULL;
+	free_list  = NULL;
     for (int i = 0; i < POOL_CNT; i++)    {
         struct thread_node *tmp = new struct thread_node;
         tmp->tid    = i;
@@ -146,7 +148,7 @@ ThreadPool<T> :: getDoneThreads(bool &allDone)    {
     if (tmp == NULL)
         allDone = true;
     while (tmp) {
-        if (tmp->thread->getThreadState() == THREAD_DONE)   {
+        if (tmp->thread != NULL && tmp->thread->getThreadState() == THREAD_DONE)   {
            toReturn.push_back(tmp); 
            if (prev != NULL)    {
                 prev->next = tmp->next;
