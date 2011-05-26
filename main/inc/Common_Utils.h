@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#define MAX(a1, a2) ((a1) > (a2) ? (a1) : (a2))
+#define MIN(a1, a2) ((a1) < (a2) ? (a1) : (a2))
 
 class Common_Utils  {
 public:

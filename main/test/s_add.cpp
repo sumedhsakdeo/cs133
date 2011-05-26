@@ -25,13 +25,37 @@ int main(int argc, char **argv)  {
         i++;
     }
     
-    cout << sum.ToString();
     string result;
     fin >> result;
     if (!result.compare(sum.ToString())) {
-        cout << "Sucess" << endl;
+        cout << "Sum Sucess" << endl;
     } else { 
-        cerr << "Failure" << endl;
+        cerr << "Sum Failure" << endl;
+    }
+
+    BigUInt zero("0");
+    BigUInt anded;
+    anded = zero & sum;
+    if (!anded.ToString().compare(zero.ToString())) {
+        cout << "And Success" << endl;
+    } else {
+        cerr << "And Failure" << endl;
+    }
+    
+    BigUInt ored;
+    ored = zero | sum;
+    if (!ored.ToString().compare(sum.ToString())) {
+        cout << "OR Success" << endl;
+    } else {
+        cerr << "OR Failure" << endl;
+    }
+
+    BigUInt xored;
+    xored = zero ^ sum;
+    if (!xored.ToString().compare(sum.ToString())) {
+        cout << "XOR Success" << endl;
+    } else {
+        cerr << "XOR Failure" << endl;
     }
 
 /*    BigUInt op1("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");

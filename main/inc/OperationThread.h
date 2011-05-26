@@ -124,6 +124,17 @@ OperationThread<T, M> :: run()   {
         case SUB:
             this->result = this->op1 - this->op2;
             break;
+        case AND:
+            this->result = (M)this->op1 & (M)this->op2;
+            break;
+        case OR:
+            this->result = (M)this->op1 | (M)this->op2;
+            break;
+        case XOR:
+            this->result = (M)this->op1 ^ (M)this->op2;
+            break;
+
+
     }
     this->setThreadState(THREAD_DONE);
 }

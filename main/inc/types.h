@@ -5,7 +5,10 @@ typedef enum {
         ADD = 0,
         SUB,
         MULT,
-        DIV
+        DIV,
+        AND,
+        OR,
+        XOR
         } OPERATION;
 
 typedef enum {
