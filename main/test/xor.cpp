@@ -37,16 +37,16 @@ main(int argc, char **argv)
         //fout << op1.ToString() << endl;
         //fout << op2.ToString() << endl;
 
-        BigUInt sum;
+        BigUInt xorop;
 
-        sum = op1 + op2;
-        string add_str;
-        fin >> add_str;
-        //fout << sum.ToString() << endl;
-        if (!add_str.compare(sum.ToString())) {
-            //cout << i << " : " << "Success: Addition" << endl;
+        xorop = op1 ^ op2;
+        string xor_str;
+        fin >> xor_str;
+        //fout << xorop.ToString() << endl;
+        if (!xor_str.compare(xorop.ToString())) {
+            //cout << i << " : " << "Success: XOR" << endl;
         } else {
-            cerr << i << " : " << "Failure: Addition" << endl;
+            cerr << i << " : " << "Failure: XOR" << endl;
         }
     }
 

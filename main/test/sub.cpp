@@ -37,16 +37,16 @@ main(int argc, char **argv)
         //fout << op1.ToString() << endl;
         //fout << op2.ToString() << endl;
 
-        BigUInt sum;
+        BigUInt diff;
 
-        sum = op1 + op2;
-        string add_str;
-        fin >> add_str;
-        //fout << sum.ToString() << endl;
-        if (!add_str.compare(sum.ToString())) {
-            //cout << i << " : " << "Success: Addition" << endl;
+        diff = op1 - op2;
+        string sub_str;
+        fin >> sub_str;
+        //fout << diff.ToString() << endl;
+        if (!sub_str.compare(diff.ToString())) {
+            //cout << i << " : " << "Success: Subtraction" << endl;
         } else {
-            cerr << i << " : " << "Failure: Addition" << endl;
+            cerr << i << " : " << "Failure: Subtraction" << endl;
         }
     }
 

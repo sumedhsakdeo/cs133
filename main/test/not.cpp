@@ -27,26 +27,24 @@ main(int argc, char **argv)
     //fout << num_tests << endl;
 
     for (int i = 0; i < num_tests; ++i) {
-        string op1_str, op2_str;
+        string op1_str;
 
-        fin >> op1_str >> op2_str;
+        fin >> op1_str;
 
         BigUInt op1(op1_str);
-        BigUInt op2(op2_str);
 
         //fout << op1.ToString() << endl;
-        //fout << op2.ToString() << endl;
 
-        BigUInt sum;
+        BigUInt notop;
 
-        sum = op1 + op2;
-        string add_str;
-        fin >> add_str;
-        //fout << sum.ToString() << endl;
-        if (!add_str.compare(sum.ToString())) {
-            //cout << i << " : " << "Success: Addition" << endl;
+        notop = ~op1;
+        string not_str;
+        fin >> not_str;
+        //fout << notop.ToString() << endl;
+        if (!not_str.compare(notop.ToString())) {
+            //cout << i << " : " << "Success: NOT" << endl;
         } else {
-            cerr << i << " : " << "Failure: Addition" << endl;
+            cerr << i << " : " << "Failure: NOT" << endl;
         }
     }
 

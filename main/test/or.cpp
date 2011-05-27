@@ -37,16 +37,16 @@ main(int argc, char **argv)
         //fout << op1.ToString() << endl;
         //fout << op2.ToString() << endl;
 
-        BigUInt sum;
+        BigUInt orop;
 
-        sum = op1 + op2;
-        string add_str;
-        fin >> add_str;
-        //fout << sum.ToString() << endl;
-        if (!add_str.compare(sum.ToString())) {
-            //cout << i << " : " << "Success: Addition" << endl;
+        orop = op1 | op2;
+        string or_str;
+        fin >> or_str;
+        //fout << orop.ToString() << endl;
+        if (!or_str.compare(orop.ToString())) {
+            //cout << i << " : " << "Success: OR" << endl;
         } else {
-            cerr << i << " : " << "Failure: Addition" << endl;
+            cerr << i << " : " << "Failure: OR" << endl;
         }
     }
 
@@ -55,3 +55,4 @@ main(int argc, char **argv)
 
     return 0;
 }
+
