@@ -3,6 +3,8 @@
 
 #include    "Thread.h"
 
+#define     BLOCK_SIZE  20
+
 // This class is child class of abstract Thread which is templatized.
 // It contains two operands, and operation enum, and placeholder for result of the
 // computation.
@@ -10,10 +12,10 @@ template <class T, class M>
 class OperationThread   : public Thread {
     
 private:
-    T       op1, op2; 
-    M       result;
+    std::vector<T>        op1, op2; 
+    std::vector<M>        *result;  //  TODO directly store the result in the output vector
     std::vector<short>    *carry;
-    int     idx;
+    int                   st_idx ,end_idx;
     OPERATION operation;
 
 public:
@@ -27,24 +29,28 @@ public:
     void run();
     
     // getter setter for operand 1 
-    T      getOp1();
-    void   setOp1(T op1);
+    std::vector<T>      getOp1();
+    void   setOp1(std::vector<T> op1);
 
     // getter setter for operand 2 
-    T      getOp2();
-    void   setOp2(T op2);
+    std::vector<T>      getOp2();
+    void   setOp2(std::vector<T> op2);
     
-    // getter setter for index 
-    int     getIdx();
-    void    setIdx(int);
+    // getter setter for start index 
+    int     getStIdx();
+    void    setStIdx(int);
+
+    // getter setter for end index 
+    int     getEndIdx();
+    void    setEndIdx(int);
 
     // setter for carry
     std::vector<short>*   getCarry();
     void    setCarry(std::vector<short>*);
 
-
-    //  getter for result
-    M      getResult();
+    //  setter getter for result
+    std::vector<M>*   getResult();
+    void    setResult(std::vector<M>*);
     
     // getter setter for operation
     OPERATION        getOperation();
@@ -63,39 +69,51 @@ OperationThread<T, M>  ::  ~OperationThread()    {
 }
 
 template <class T, class M>
-inline T
+inline std::vector<T>
 OperationThread<T, M>  ::  getOp1()    {
     return this->op1;
 }
 
 template <class T, class M>
 inline void
-OperationThread<T, M>  ::  setOp1(T op1)    {
+OperationThread<T, M>  ::  setOp1(std::vector<T> op1)    {
     this->op1 = op1;
 }
 
 template <class T, class M>
-inline T
+inline std::vector<T>
 OperationThread<T, M>  ::  getOp2()    {
     return this->op2;
 }
 
 template <class T, class M>
 inline void
-OperationThread<T, M>  ::  setOp2(T op2)    {
+OperationThread<T, M>  ::  setOp2(std::vector<T> op2)    {
     this->op2 = op2;
 }
 
 template <class T, class M>
 inline int
-OperationThread<T, M> :: getIdx()   {
-    return this->idx;
+OperationThread<T, M> :: getStIdx()   {
+    return this->st_idx;
 }
 
 template <class T, class M>
 inline void
-OperationThread<T, M> :: setIdx(int idx)   {
-    this->idx = idx;
+OperationThread<T, M> :: setStIdx(int st_idx)   {
+    this->st_idx = st_idx;
+}
+
+template <class T, class M>
+inline int
+OperationThread<T, M> :: getEndIdx()   {
+    return this->end_idx;
+}
+
+template <class T, class M>
+inline void
+OperationThread<T, M> :: setEndIdx(int end_idx)   {
+    this->end_idx = end_idx;
 }
 
 template <class T, class M>
@@ -111,9 +129,15 @@ OperationThread<T, M> :: setCarry(std::vector<short> *carry)   {
 }
 
 template <class T, class M>
-inline M
+inline std::vector<M>*
 OperationThread<T, M>  ::  getResult()    {
     return this->result;
+}
+
+template <class T, class M>
+inline void 
+OperationThread<T, M>  ::  setResult(std::vector<M>* result)    {
+    this->result = result;
 }
 
 template <class T, class M>
@@ -134,29 +158,36 @@ void
 OperationThread<T, M> :: run()   {
     
     this->setThreadState(THREAD_RUNNING);
-    std::vector<short> *v = getCarry();
     switch (operation)  {
         case ADD:
-            this->result = (M)this->op1 + (M)this->op2; 
-            v->at(getIdx()) = (this->result > UINT_MAX) ? 1 : 0;
-            if (this->result > UINT_MAX) {
-                this->result -= (M)(UINT_MAX + 1);
-            } 
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)this->op1[i] + (M)this->op2[i]; 
+            }
             break;
         case SUB:
-            this->result = (M)this->op1 - (M)this->op2;
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)this->op1[i] - (M)this->op2[i]; 
+            }
             break;
         case AND:
-            this->result = (M)this->op1 & (M)this->op2;
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)this->op1[i] & (M)this->op2[i]; 
+            }
             break;
         case OR:
-            this->result = (M)this->op1 | (M)this->op2;
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)this->op1[i] | (M)this->op2[i]; 
+            }
             break;
         case XOR:
-            this->result = (M)this->op1 ^ (M)this->op2;
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)this->op1[i] ^ (M)this->op2[i]; 
+            }
             break;
         case NOT:
-            this->result = (M)~this->op1;
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)~this->op1[i]; 
+            }
             break;
     }
     this->setThreadState(THREAD_DONE);

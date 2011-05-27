@@ -132,7 +132,6 @@ BigUInt_Parallel_Utils::SubtractBignum(vector<uint32_t>& num1, vector<uint32_t>&
         } else  {
             newborrow = 0;
         }
-
         temp[i] -= borrow;
         borrow = newborrow;
         result.push_back((uint32_t) temp[i]);
