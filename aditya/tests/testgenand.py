@@ -3,24 +3,30 @@
 import random
 import math
 
-#sum = 0
-for j in range(100):
+cases = 200
+print cases
+
+doAnd = True
+doOr = False
+doExor = False
+
+for j in range(cases):
     a = 0
     for i in range(random.randint(50,500)):
         digit = random.randint(0, 4294967295)
         a = a + digit * pow(4294967296,i)
-        #print i, digit
-    #sum = sum + a
     print a
 
     b = 0
     for i in range(random.randint(50,500)):
         digit = random.randint(0, 4294967295)
         b = b + digit * pow(4294967296,i)
-        #print i, digit
-    #sum = sum + a
     print b
-    print a & b
-    print a | b
-    print a ^ b
+    
+    if doAnd:
+        print a & b
+    if doOr:
+        print a | b
+    if doExor:
+        print a ^ b
 
