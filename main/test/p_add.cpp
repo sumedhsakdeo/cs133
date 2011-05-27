@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char **argv)  {
 
-    ifstream fin(argv[1], ifstream::in);
+ /*   ifstream fin(argv[1], ifstream::in);
 
     int i = 0;
     BigUInt zero("0");
@@ -41,6 +41,14 @@ int main(int argc, char **argv)  {
         cerr << "SUB Failure" << endl;
     }
 
+    BigUInt mul, op1("123451"), op2("12345");
+    mul = op1 * op2;
+    cout << mul.ToString();
+    if (!mul.ToString().compare(zero.ToString())) {
+        cout << "MUL Success" << endl;
+    } else {
+        cerr << "MUL Failure" << endl;
+    }
 
     BigUInt anded;
     anded = zero & sum;
@@ -74,15 +82,15 @@ int main(int argc, char **argv)  {
         cerr << "NOT Failure" << endl;
     }
 
-
-/*    BigUInt op1("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
-    BigUInt op2("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
+*/
+    BigUInt op11("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
+    BigUInt op21("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
 
     BigUInt sum; 
-    sum = op1 + op2;
-    cout << op1.ToString() << " + " << op2.ToString() << " = " << sum.ToString() << endl;
+    sum = op11 + op21;
+    cout << op11.ToString() << " + " << op21.ToString() << " = " << sum.ToString() << endl;
 
-    int count = 1000;
+ /*   int count = 1000;
     while(count--)  {
         vector<int> v1(100);
         vector<int> v2(100);
@@ -92,10 +100,11 @@ int main(int argc, char **argv)  {
             v2[i] = i;
         }
 
-       vector<int> v3 = Parallelizer::executeBatchRequest<int,int>(v1, v2, ADD, v1.size());  
+       vector<int> v3 = Parallelizer::executeBatchRequest<int,int>(v1, v2, ADD,
+       v1.size(), );  
        for (int i=0; i < v3.size(); i++)
             cout << v3[i] << endl;
     }
-    */
+   */ 
     return 0;
 }

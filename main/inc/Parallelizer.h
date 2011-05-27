@@ -14,14 +14,14 @@
 class Parallelizer  {
 public:
     template <class T, class M>
-    static void executeBatchRequest(const std::vector<T>&, const std::vector<T>&, std::vector<M>&, OPERATION, int); 
+    static void executeBatchRequest(const std::vector<T>&, const std::vector<T>&, std::vector<M>&, OPERATION, int, std::vector<short> &carrySet); 
     template <class T, class M>
     static void resultCollector(std::vector<M>&, bool);
 };
 
 template <class T, class M> 
 void
-Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vector<T> &oper2, std::vector<M> &result, OPERATION op, int limit)    {
+Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vector<T> &oper2, std::vector<M> &result, OPERATION op, int limit, std::vector<short> &carrySet)    {
     
     ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
 
@@ -34,6 +34,7 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
         }
         ot->setOp1(oper1[i]);
         ot->setOp2(oper2[i]);
+        ot->setCarry(&carrySet);
         ot->setIdx(i);
         ot->setOperation(op);
         ot->setThreadState(THREAD_SCHED);

@@ -2,7 +2,7 @@
 #define _INC_THREAD_POOL_H
 
 #include    <pthread.h>
-#define POOL_CNT    25
+#define POOL_CNT    10
 
 //  A class which manages POOL_CNT threads which can be used for performing a
 //  computation.

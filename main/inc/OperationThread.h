@@ -12,6 +12,7 @@ class OperationThread   : public Thread {
 private:
     T       op1, op2; 
     M       result;
+    std::vector<short>    *carry;
     int     idx;
     OPERATION operation;
 
@@ -36,6 +37,10 @@ public:
     // getter setter for index 
     int     getIdx();
     void    setIdx(int);
+
+    // setter for carry
+    std::vector<short>*   getCarry();
+    void    setCarry(std::vector<short>*);
 
 
     //  getter for result
@@ -94,6 +99,18 @@ OperationThread<T, M> :: setIdx(int idx)   {
 }
 
 template <class T, class M>
+inline std::vector<short>* 
+OperationThread<T, M> :: getCarry() {
+    return this->carry;
+}
+
+template <class T, class M>
+inline void
+OperationThread<T, M> :: setCarry(std::vector<short> *carry)   {
+    this->carry = carry;
+}
+
+template <class T, class M>
 inline M
 OperationThread<T, M>  ::  getResult()    {
     return this->result;
@@ -117,12 +134,17 @@ void
 OperationThread<T, M> :: run()   {
     
     this->setThreadState(THREAD_RUNNING);
+    std::vector<short> *v = getCarry();
     switch (operation)  {
         case ADD:
             this->result = (M)this->op1 + (M)this->op2; 
+            v->at(getIdx()) = (this->result > UINT_MAX) ? 1 : 0;
+            if (this->result > UINT_MAX) {
+                this->result -= (M)(UINT_MAX + 1);
+            } 
             break;
         case SUB:
-            this->result = this->op1 - this->op2;
+            this->result = (M)this->op1 - (M)this->op2;
             break;
         case AND:
             this->result = (M)this->op1 & (M)this->op2;
