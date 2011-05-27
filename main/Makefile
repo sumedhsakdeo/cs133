@@ -1,8 +1,8 @@
-all: all_serial all_parallel
+all: all_serial all_parallel test
 
-all_parallel: utils parallel test_parallel
+all_parallel: utils parallel
 
-all_serial: utils serial test_serial
+all_serial: utils serial
 
 utils: src/Common_Utils.cpp src/BigUInt.cpp
 	g++ -g -c -Iinc/ src/Common_Utils.cpp -o obj/Common_Utils.o
@@ -13,9 +13,12 @@ serial: src/BigUInt_Utils.cpp src/BigUInt_Serial_Impl.cpp
 	g++ -g -c -D SERIAL=1 -Iinc/ src/BigUInt.cpp -o obj/BigUInt_s.o
 	
 parallel: src/BigUInt_Parallel_Utils.cpp src/BigUInt_Parallel_Impl.cpp src/BigUInt.cpp
-	g++ -g -c -Iinc/ src/BigUInt_Parallel_Utils.cpp -o obj/BigUInt_Parallel_Utils.o
+	g++ -g -c -D BLOCK_SIZE=120 -Iinc/ src/BigUInt_Parallel_Utils.cpp -o obj/BigUInt_Parallel_Utils.o
 	g++ -g -c -Iinc/ src/BigUInt_Parallel_Impl.cpp -o obj/BigUInt_Parallel.o
 	g++ -g -c -D PARALLEL=1 -Iinc/ src/BigUInt.cpp -o obj/BigUInt_p.o
+
+test: test_serial test_parallel
+	cp test/testall obj/
 
 test_serial: utils serial test/main.cpp test/p_add.cpp
 	g++ -g -Iinc/ -lpthread test/p_add.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o -o obj/s_add

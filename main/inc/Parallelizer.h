@@ -8,6 +8,7 @@
 #include "OperationThread.h"
 #include "ThreadPool.h"
 #include <iostream>
+#include <cstdio>
 
 #include "types.h"
 
@@ -46,7 +47,6 @@ Parallelizer :: scheduler(const std::vector<T> &block_v1, const std::vector<T> &
             pthread_cond_signal(ot->getCondSchedule());
             pthread_yield();
         }
-
 }
 
 template <class T, class M> 

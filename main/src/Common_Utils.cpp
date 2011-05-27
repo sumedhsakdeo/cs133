@@ -133,3 +133,11 @@ Common_Utils::VectorToString(const vector<uint32_t>& buf)
 
     return *output;
 }
+
+uint64_t
+GetTimeDifference(struct timeval tv_beg, struct timeval tv_end)
+{
+    return ((tv_end.tv_usec-tv_beg.tv_usec)+(tv_end.tv_sec-tv_beg.tv_sec)*1000000);
+}
+
+

@@ -3,7 +3,9 @@
 
 #include    "Thread.h"
 
+#ifndef BLOCK_SIZE
 #define     BLOCK_SIZE  40
+#endif
 
 // This class is child class of abstract Thread which is templatized.
 // It contains two operands, and operation enum, and placeholder for result of the

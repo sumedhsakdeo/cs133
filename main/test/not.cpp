@@ -3,9 +3,12 @@
 #include <string>
 extern "C" {
 #include <stdint.h>
+#include <sys/time.h>
+#include <unistd.h>
 }
 
 #include <BigUInt.h>
+#include <Common_Utils.h>
 
 using namespace std;
 
@@ -21,6 +24,8 @@ main(int argc, char **argv)
 
     ifstream fin(argv[1], ifstream::in);
     //ofstream fout(argv[2], ofstream::out);
+
+    uint64_t total_time = 0;
     
     int num_tests;
     fin >> num_tests;
@@ -37,7 +42,15 @@ main(int argc, char **argv)
 
         BigUInt notop;
 
+        struct timeval tv_beg, tv_end;
+        struct timezone tz;
+ 
+        gettimeofday(&tv_beg, &tz);
         notop = ~op1;
+        gettimeofday(&tv_end, &tz);
+
+        total_time += GetTimeDifference(tv_beg, tv_end);
+
         string not_str;
         fin >> not_str;
         //fout << notop.ToString() << endl;
@@ -50,6 +63,7 @@ main(int argc, char **argv)
 
     fin.close();
     //fout.close();
+    cout <<  total_time << endl;
 
     return 0;
 }
