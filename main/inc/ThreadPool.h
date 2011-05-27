@@ -1,8 +1,8 @@
 #ifndef _INC_THREAD_POOL_H
 #define _INC_THREAD_POOL_H
-
+#include    <iostream>
 #include    <pthread.h>
-#define POOL_CNT    10
+#define POOL_CNT    30
 
 //  A class which manages POOL_CNT threads which can be used for performing a
 //  computation.
@@ -75,6 +75,7 @@ ThreadPool<T>  ::  init() {
 //  ThreadPool constructor
 template <class T>
 ThreadPool<T> :: ThreadPool()   {
+   std::cout << "*******thread constructor\n";
    pthread_mutex_init(&mutex_free_list, NULL);
    pthread_cond_init(&cond_free_list, NULL);
    init();
@@ -83,6 +84,7 @@ ThreadPool<T> :: ThreadPool()   {
 //  ThreadPool destructore
 template <class T>
 ThreadPool<T> :: ~ThreadPool()   {
+   std::cout << "**********thread destructor\n";
    struct thread_node *tmp = free_list;
    while (free_list)    {
         free_list = free_list->next;

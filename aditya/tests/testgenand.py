@@ -6,9 +6,9 @@ import math
 cases = 200
 print cases
 
-doAnd = False
+doAnd = True
 doOr = False
-doExor = True
+doExor = False
 
 for j in range(cases):
     a = 0

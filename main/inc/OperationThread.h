@@ -3,7 +3,7 @@
 
 #include    "Thread.h"
 
-#define     BLOCK_SIZE  20
+#define     BLOCK_SIZE  40
 
 // This class is child class of abstract Thread which is templatized.
 // It contains two operands, and operation enum, and placeholder for result of the
@@ -14,7 +14,7 @@ class OperationThread   : public Thread {
 private:
     std::vector<T>        op1, op2; 
     std::vector<M>        *result;  //  TODO directly store the result in the output vector
-    std::vector<short>    *carry;
+    std::vector<T>    *carry;
     int                   st_idx ,end_idx;
     OPERATION operation;
 
@@ -45,8 +45,8 @@ public:
     void    setEndIdx(int);
 
     // setter for carry
-    std::vector<short>*   getCarry();
-    void    setCarry(std::vector<short>*);
+    std::vector<T>*   getCarry();
+    void    setCarry(std::vector<T>*);
 
     //  setter getter for result
     std::vector<M>*   getResult();
@@ -117,14 +117,14 @@ OperationThread<T, M> :: setEndIdx(int end_idx)   {
 }
 
 template <class T, class M>
-inline std::vector<short>* 
+inline std::vector<T>* 
 OperationThread<T, M> :: getCarry() {
     return this->carry;
 }
 
 template <class T, class M>
 inline void
-OperationThread<T, M> :: setCarry(std::vector<short> *carry)   {
+OperationThread<T, M> :: setCarry(std::vector<T> *carry)   {
     this->carry = carry;
 }
 
@@ -161,7 +161,9 @@ OperationThread<T, M> :: run()   {
     switch (operation)  {
         case ADD:
             for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
-                this->result->at(j++) = (M)this->op1[i] + (M)this->op2[i]; 
+                this->result->at(j) = (M)this->op1[i] + (M)this->op2[i]; 
+            //    this->carry->at(j) = this->result->at(j) > UINT_MAX;
+                j++;
             }
             break;
         case SUB:
@@ -189,6 +191,32 @@ OperationThread<T, M> :: run()   {
                 this->result->at(j++) = (M)~this->op1[i]; 
             }
             break;
+        case EQ:
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = ((M)this->op1[i] == (M)this->op2[i]); 
+            }
+            break;
+        case GT:
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                if ((M)this->op1[i] > (M)this->op2[i])
+                    this->result->at(j++) = 1;
+                else if ((M)this->op1[i] < (M)this->op2[i])
+                    this->result->at(j++) = -1;
+                else
+                    this->result->at(j++) = 0;
+            }
+            break;
+        case LT:
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                if ((M)this->op1[i] < (M)this->op2[i])
+                    this->result->at(j++) = 1;
+                else if ((M)this->op1[i] > (M)this->op2[i])
+                    this->result->at(j++) = -1;
+                else
+                    this->result->at(j++) = 0;
+            }
+            break;
+
     }
     this->setThreadState(THREAD_DONE);
 }

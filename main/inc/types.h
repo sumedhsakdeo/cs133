@@ -9,7 +9,10 @@ typedef enum {
         AND,
         OR,
         XOR,
-        NOT
+        NOT,
+        EQ,
+        GT,
+        LT
         } OPERATION;
 
 typedef enum {

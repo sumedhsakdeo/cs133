@@ -24,8 +24,8 @@ BigUInt_Parallel_Utils::AddBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
     int i;
     vector<uint32_t> result;
     vector<uint64_t> temp(MAX(num1.size(),num2.size()));
-    vector<short> carrySet(limit);
-    Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, num2, temp, ADD, limit, carrySet);
+    vector<uint32_t> dummy;
+    Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, num2, temp, ADD, limit, dummy);
     
     for (i = 0; i < limit; i++) {
         temp[i] += carry;
@@ -112,18 +112,8 @@ BigUInt_Parallel_Utils::SubtractBignum(vector<uint32_t>& num1, vector<uint32_t>&
         return result;
     }
     
-    vector<short> dummy;
+    vector<uint32_t> dummy;
     Parallelizer::executeBatchRequest<uint32_t,int64_t>(num1, num2, temp, SUB, limit, dummy);
-   /* 
-    for (i=0; i < limit; i++)   
-        cout << num1[i] << " ";
-    cout << endl;
-    for (i=0; i < limit; i++)   
-        cout << num2[i] << " ";
-    cout << endl;
-    for (i=0; i < limit; i++)   
-        cout << temp[i] << " ";
-    cout << endl;*/
 
     for (i = 0; i < limit; i++) {
         if (temp[i] < 0)    {
@@ -243,17 +233,10 @@ BigUInt_Parallel_Utils::AndBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
 {
     uint32_t limit = (num1.size() > num2.size()) ? num2.size() : num1.size();
     vector <uint32_t> result(limit);
-    vector<short> dummy;
+    vector<uint32_t> dummy;
     Parallelizer::executeBatchRequest<uint32_t,uint32_t>(num1, num2, result, AND, limit, dummy);
 
-   /*
-    for (int i = 0; i < limit; i++) {
-        uint32_t temp = num1.at(i) & num2.at(i);
-        result.push_back(temp);
-    }*/
-
     //we ignore the rest, and also not pad with zeros because in our representation, padded zeros are not allowed.
-
     while (result.size() != 0 && result.back() == 0) {
         result.pop_back();
     }
@@ -266,15 +249,10 @@ BigUInt_Parallel_Utils::OrBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
     uint32_t limit = MIN(num1.size(),num2.size());
     vector <uint32_t> result(limit);
-    vector<short> dummy;
+    vector<uint32_t> dummy;
     Parallelizer::executeBatchRequest<uint32_t,uint32_t>(num1, num2, result, OR, limit, dummy);
 
     int i = limit;
-/*    for (i = 0; i < limit; i++) {
-        uint32_t temp = num1.at(i) | num2.at(i);
-        result.push_back(temp);
-    } */
-
     if (limit < num1.size()) {
         while (i < num1.size()) {
             result.push_back(num1.at(i));
@@ -300,17 +278,10 @@ BigUInt_Parallel_Utils::XorBignum(vector<uint32_t>& num1, vector<uint32_t>& num2
 {
     uint32_t limit = MIN(num1.size(),num2.size());
     vector <uint32_t> result(limit);
-    vector<short> dummy;
+    vector<uint32_t> dummy;
     Parallelizer::executeBatchRequest<uint32_t,uint32_t>(num1, num2, result, XOR, limit, dummy);
 
     int i = limit;
-/*
-    for (i = 0; i < limit; i++) {
-        uint32_t temp = num1.at(i) ^ num2.at(i);
-        result.push_back(temp);
-    }
-*/
-
     if (limit < num1.size()) {
         while (i < num1.size()) {
             result.push_back(num1.at(i));
@@ -335,16 +306,10 @@ vector<uint32_t>
 BigUInt_Parallel_Utils::NotBignum(vector<uint32_t>& num1)
 {
     vector <uint32_t> result(num1.size());
-    vector<short> dummy;
+    vector<uint32_t> dummy;
     //  second vector argument is dummy and shall not be used.
     Parallelizer::executeBatchRequest<uint32_t,uint32_t>(num1, num1, result, NOT, num1.size(), dummy);
     
-/*    for (int i = 0; i < num1.size(); i++) {
-        uint32_t temp = ~num1.at(i);
-        result.push_back(temp);
-    }
- */
-
     //just for sanity, though not really required
     while (result.size() != 0 && result.back() == 0) {
         result.pop_back();
@@ -368,9 +333,11 @@ BigUInt_Parallel_Utils::EqualBignum(vector<uint32_t>& num1, vector<uint32_t>& nu
     if (num1.size() != num2.size()) {
         return false;
     }
-
+    vector <bool> result(num1.size());
+    vector <uint32_t> dummy;
+    Parallelizer::executeBatchRequest<uint32_t,bool>(num1, num2, result, EQ, num1.size(), dummy);
     for (int i = 0; i < num1.size(); i++) {
-        if (num1.at(i) != num2.at(i)) return false;
+        if (!result[i]) return false;
     }
     
     return true;
@@ -393,14 +360,16 @@ BigUInt_Parallel_Utils::GreaterThan(vector<uint32_t>& num1, vector<uint32_t>& nu
         return true;
     }
 
+    vector <short> result(num1.size());
+    vector <uint32_t> dummy;
+    Parallelizer::executeBatchRequest<uint32_t,short>(num1, num2, result, GT, num1.size(), dummy);
     for (int i = num1.size() - 1; i >= 0; --i) {
-        if (num1.at(i) < num2.at(i)) {
+        if (result[i] < 0)  {
             return false;
-        } else if (num1.at(i) > num2.at(i)) {
+        } else if(result[i] > 0) {
             return true;
         }
     }
-
     return false;
 }
 
@@ -421,15 +390,18 @@ BigUInt_Parallel_Utils::LessThan(vector<uint32_t>& num1, vector<uint32_t>& num2)
         return true;
     }
 
+    vector <short> result(num1.size());
+    vector <uint32_t> dummy;
+    Parallelizer::executeBatchRequest<uint32_t,short>(num1, num2, result, LT, num1.size(), dummy);
     for (int i = num1.size() - 1; i >= 0; --i) {
-        if (num1.at(i) > num2.at(i)) {
+        if (result[i] > 0)  {
             return false;
-        } else if (num1.at(i) < num2.at(i)) {
+        } else if(result[i] < 0) {
             return true;
         }
     }
-
     return false;
+
 }
 
 vector<uint32_t>

@@ -22,6 +22,7 @@ test_serial: utils serial test/main.cpp test/p_add.cpp
 	g++ -g -Iinc/ test/main.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/serial
 	g++ -g -Iinc/ test/add.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/add_s
 	g++ -g -Iinc/ test/sub.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/sub_s
+	g++ -g -Iinc/ test/mult.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/mult_s
 	g++ -g -Iinc/ test/and.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/and_s
 	g++ -g -Iinc/ test/or.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/or_s
 	g++ -g -Iinc/ test/xor.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/xor_s
@@ -32,6 +33,7 @@ test_parallel: utils parallel test/p_add.cpp test/main.cpp
 	g++ -g -Iinc/ -lpthread test/main.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/parallel
 	g++ -g -Iinc/ -lpthread test/add.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/add_p
 	g++ -g -Iinc/ -lpthread test/sub.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/sub_p
+	g++ -g -Iinc/ -lpthread test/mult.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/mult_p
 	g++ -g -Iinc/ -lpthread test/and.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/and_p
 	g++ -g -Iinc/ -lpthread test/or.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/or_p
 	g++ -g -Iinc/ -lpthread test/xor.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/xor_p

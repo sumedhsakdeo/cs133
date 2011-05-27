@@ -3,30 +3,32 @@
 import random
 import math
 
-#generates a large number
+cases = 200
+print cases
 
-def genlargenum():
-    a = 0
-    for i in range(random.randint(500,1000)):
-        a = 10 * a + random.randint(0,9)
-    return a
+doAnd = False 
+doOr = False
+doExor = False
+doMult = True
 
-#sum = 0
-for j in range(100):
+for j in range(cases):
     a = 0
     for i in range(random.randint(50,500)):
         digit = random.randint(0, 4294967295)
-        a = a + digit * pow(42949672956,i)
-        #print i, digit
-    #sum = sum + a
+        a = a + digit * pow(4294967296,i)
     print a
 
     b = 0
     for i in range(random.randint(50,500)):
         digit = random.randint(0, 4294967295)
         b = b + digit * pow(4294967296,i)
-        #print i, digit
-    #sum = sum + a
     print b
-    print a * b
-
+    
+    if doAnd:
+        print a & b
+    if doOr:
+        print a | b
+    if doExor:
+        print a ^ b
+    if doMult:
+        print a * b
