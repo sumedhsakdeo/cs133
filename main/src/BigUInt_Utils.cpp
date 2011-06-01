@@ -196,6 +196,11 @@ BigUInt_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
     return result;
 }
 
+vector<uint32_t>
+BigUInt_Utils::DivideBignum(vector<uint32_t>& num1, vector<uint32_t>& num2) {
+    return num1;
+}
+
 vector<uint32_t> 
 BigUInt_Utils::AndBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {

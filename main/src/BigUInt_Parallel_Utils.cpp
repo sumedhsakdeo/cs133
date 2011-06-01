@@ -228,6 +228,12 @@ BigUInt_Parallel_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>&
     return result;
 }
 
+vector<uint32_t>
+BigUInt_Parallel_Utils::DivideBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
+{
+   return num1;
+}
+
 vector<uint32_t> 
 BigUInt_Parallel_Utils::AndBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {

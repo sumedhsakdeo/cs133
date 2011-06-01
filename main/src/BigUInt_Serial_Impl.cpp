@@ -77,8 +77,14 @@ BigUInt_Serial_Impl::operator*(const BigUInt_Inf * op2)
 BigUInt_Inf *
 BigUInt_Serial_Impl::operator/(const BigUInt_Inf * op2)
 {
-    BigUInt_Inf * temp;
-    return temp;
+    const BigUInt_Serial_Impl* sop2 = dynamic_cast<const BigUInt_Serial_Impl *>(op2);
+    vector<uint32_t> num1 = buf;
+    vector<uint32_t> num2 = sop2->buf;
+
+    vector<uint32_t> result = BigUInt_Utils::DivideBignum(num1, num2);
+
+    BigUInt_Inf *ret = new BigUInt_Serial_Impl(result);
+    return ret;
 }
 
 BigUInt_Inf *
