@@ -198,7 +198,12 @@ BigUInt_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 
 vector<uint32_t>
 BigUInt_Utils::DivideBignum(vector<uint32_t>& num1, vector<uint32_t>& num2) {
-    return num1;
+    
+    vector<uint32_t> result;
+
+    if (num1.size() < num2.size() || (num1.size() == num2.size() && LessThan(num1, num2)))
+        return result;
+    return result;
 }
 
 vector<uint32_t> 

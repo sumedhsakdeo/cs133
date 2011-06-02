@@ -424,15 +424,19 @@ BigUInt_Parallel_Utils::Lshift(vector<uint32_t>& num1, const uint32_t& shift)
         result.push_back(0);
     }
 
-    uint64_t temp = 0;
+    vector <uint32_t> dummy;
+    vector <uint64_t> temp(num1.size());
+    Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, inshift, temp, LSHIFT, num1.size(), dummy);
+
+    uint64_t val_temp = 0;
     for (int i = 0; i < num1.size(); i++) {
-        temp += (uint64_t) ( (uint64_t) num1.at(i) << inshift);
-        result.push_back((uint32_t) (temp & mask));
-        temp = temp >> bitsindigit;
+        val_temp += (uint64_t) temp[i];
+        result.push_back((uint32_t) (val_temp & mask));
+        val_temp = val_temp >> bitsindigit;
     }
 
-    if (temp != 0) {
-        result.push_back((uint32_t) temp);
+    if (val_temp != 0) {
+        result.push_back((uint32_t) val_temp);
     }
 
     return result;
@@ -448,11 +452,15 @@ BigUInt_Parallel_Utils::Rshift(vector<uint32_t>& num1, const uint32_t& shift)
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
 
-    uint64_t temp = 0;
+    vector <uint64_t> temp(num1.size());
+    vector <uint32_t> dummy;
+    Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, inshift, temp, RSHIFT, num1.size(), dummy);
+    
+    uint64_t val_temp = 0;
     for (int i = num1.size() - 1; i >= newdigits; i--) {
-        temp += (uint64_t) ( (uint64_t) num1.at(i) << bitsindigit) >> inshift;
-        result.push_back((uint32_t) (temp >> bitsindigit));
-        temp = temp << bitsindigit;
+        val_temp += (uint64_t) temp[i];
+        result.push_back((uint32_t) (val_temp >> bitsindigit));
+        val_temp = val_temp << bitsindigit;
     }
     
     reverse(result.begin(), result.end());
