@@ -3,7 +3,7 @@
 import random
 import math
 
-cases = 300
+cases = 200
 print cases
 
 for j in range(cases):
