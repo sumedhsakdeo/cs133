@@ -30,6 +30,7 @@ test_serial: utils serial test/main.cpp test/p_add.cpp
 	g++ -g -Iinc/ test/or.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/or_s
 	g++ -g -Iinc/ test/xor.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/xor_s
 	g++ -g -Iinc/ test/not.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/not_s
+	g++ -g -Iinc/ test/eq.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/eq_s
 
 test_parallel: utils parallel test/p_add.cpp test/main.cpp
 	g++ -g -Iinc/ -lpthread test/p_add.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/p_add
@@ -41,6 +42,7 @@ test_parallel: utils parallel test/p_add.cpp test/main.cpp
 	g++ -g -Iinc/ -lpthread test/or.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/or_p
 	g++ -g -Iinc/ -lpthread test/xor.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/xor_p
 	g++ -g -Iinc/ -lpthread test/not.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/not_p
+	g++ -g -Iinc/ -lpthread test/eq.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/eq_p
 
 clean:
 	rm -r obj/*.o

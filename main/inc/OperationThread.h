@@ -16,7 +16,8 @@ class OperationThread   : public Thread {
 private:
     std::vector<T>        op1, op2; 
     std::vector<M>        *result;  //  TODO directly store the result in the output vector
-    std::vector<T>    *carry;
+    std::vector<T>        *carry;
+    int                   shift;
     int                   st_idx ,end_idx;
     OPERATION operation;
 
@@ -45,6 +46,10 @@ public:
     // getter setter for end index 
     int     getEndIdx();
     void    setEndIdx(int);
+
+    // getter setter for shift
+    int     getShift();
+    void    setShift(int);
 
     // setter for carry
     std::vector<T>*   getCarry();
@@ -116,6 +121,18 @@ template <class T, class M>
 inline void
 OperationThread<T, M> :: setEndIdx(int end_idx)   {
     this->end_idx = end_idx;
+}
+
+template <class T, class M>
+inline int
+OperationThread<T, M> :: getShift()   {
+    return this->shift;
+}
+
+template <class T, class M>
+inline void
+OperationThread<T, M> :: setShift(int shift)   {
+    this->shift = shift;
 }
 
 template <class T, class M>
@@ -218,7 +235,17 @@ OperationThread<T, M> :: run()   {
                     this->result->at(j++) = 0;
             }
             break;
-
+        case LSHIFT:
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M)this->op1[i] << shift; 
+            }
+            break;
+        case RSHIFT:
+            int bitsindigit = sizeof(uint32_t) * 8;
+            for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
+                this->result->at(j++) = (M) ((M)this->op1[i] << bitsindigit)  >> shift; 
+            }
+            break;
     }
     this->setThreadState(THREAD_DONE);
 }

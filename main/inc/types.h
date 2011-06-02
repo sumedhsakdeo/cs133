@@ -12,7 +12,9 @@ typedef enum {
         NOT,
         EQ,
         GT,
-        LT
+        LT,
+        LSHIFT,
+        RSHIFT
         } OPERATION;
 
 typedef enum {

@@ -9,6 +9,7 @@ public:
     static std::vector<unsigned> AddBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> SubtractBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> MultiplyBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
+    static std::vector<unsigned> DivideBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> AndBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> OrBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);
     static std::vector<unsigned> XorBignum(std::vector<unsigned>& num1, std::vector<unsigned>& num2);

@@ -15,6 +15,9 @@ BigUInt_Parallel_Impl::BigUInt_Parallel_Impl()
 BigUInt_Parallel_Impl::BigUInt_Parallel_Impl(const string& str)
 {
 	this->buf = Common_Utils::StringToVector(str);	
+    /* std::cout << "----------";
+    for (int i=0; i < this->buf.size(); i++)    
+        std::cout << this->buf[i] << "\t";*/
 }
 
 BigUInt_Parallel_Impl::BigUInt_Parallel_Impl(const BigUInt_Parallel_Impl &to_copy)
@@ -79,8 +82,14 @@ BigUInt_Parallel_Impl::operator*(const BigUInt_Inf * op2)
 BigUInt_Inf *
 BigUInt_Parallel_Impl::operator/(const BigUInt_Inf * op2)
 {
-    BigUInt_Inf * temp;
-    return temp;
+    const BigUInt_Parallel_Impl* sop2 = dynamic_cast<const BigUInt_Parallel_Impl *>(op2);
+    vector<uint32_t> num1 = buf;
+    vector<uint32_t> num2 = sop2->buf;
+
+    vector<uint32_t> result = BigUInt_Parallel_Utils::DivideBignum(num1, num2);
+
+    BigUInt_Inf *ret = new BigUInt_Parallel_Impl(result);
+    return ret;
 }
 
 BigUInt_Inf *
