@@ -13,7 +13,7 @@ serial: src/BigUInt_Utils.cpp src/BigUInt_Serial_Impl.cpp
 	g++ -g -c -D SERIAL=1 -Iinc/ src/BigUInt.cpp -o obj/BigUInt_s.o
 	
 parallel: src/BigUInt_Parallel_Utils.cpp src/BigUInt_Parallel_Impl.cpp src/BigUInt.cpp
-	g++ -g -c -D BLOCK_SIZE=120 -Iinc/ src/BigUInt_Parallel_Utils.cpp -o obj/BigUInt_Parallel_Utils.o
+	g++ -g -c -D BLOCK_SIZE=100 -Iinc/ src/BigUInt_Parallel_Utils.cpp -o obj/BigUInt_Parallel_Utils.o
 	g++ -g -c -Iinc/ src/BigUInt_Parallel_Impl.cpp -o obj/BigUInt_Parallel.o
 	g++ -g -c -D PARALLEL=1 -Iinc/ src/BigUInt.cpp -o obj/BigUInt_p.o
 

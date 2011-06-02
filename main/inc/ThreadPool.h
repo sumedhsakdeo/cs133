@@ -75,7 +75,6 @@ ThreadPool<T>  ::  init() {
 //  ThreadPool constructor
 template <class T>
 ThreadPool<T> :: ThreadPool()   {
-   std::cout << "*******thread constructor\n";
    pthread_mutex_init(&mutex_free_list, NULL);
    pthread_cond_init(&cond_free_list, NULL);
    init();

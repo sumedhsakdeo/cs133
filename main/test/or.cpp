@@ -15,7 +15,7 @@ using namespace std;
 int
 main(int argc, char **argv)
 {
-    if (argc < 3) {
+    if (argc < 2) {
         cerr << "Error: Invalid argumets." << endl;
         cerr << "\nUsage:"<< endl;
         cerr << "\t" << argv[0] << " <in-filename> <out-filename>" << endl;

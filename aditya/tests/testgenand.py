@@ -3,12 +3,12 @@
 import random
 import math
 
-cases = 200
+cases = 300
 print cases
 
-doAnd = True
+doAnd = False
 doOr = False
-doExor = False
+doExor = True
 
 for j in range(cases):
     a = 0
