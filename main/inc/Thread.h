@@ -37,6 +37,9 @@ public:
     //  getter condition variable might be used for signaling
     pthread_cond_t*   getCondSchedule();
 
+    //  getter busy lock variable
+    pthread_mutex_t*   getBusyLock();
+
     //  setter condition variable might be used for callback
     void  setCondCallback(pthread_cond_t*);
 
@@ -54,6 +57,7 @@ Thread  ::  Thread(int ID)    {
 
     setThreadID(ID);
     setBusyFlag(false);
+    setThreadState(THREAD_WAITING);
     pthread_create(&thread, NULL, &start, (void*) this); 
     pthread_mutex_init(&busyLock, NULL);
     pthread_cond_init(&cond_schedule, NULL);
@@ -103,6 +107,12 @@ Thread  ::  getCondSchedule()   {
     return &this->cond_schedule;
 }
 
+inline pthread_mutex_t*
+Thread  ::  getBusyLock()   {
+    return &this->busyLock;
+}
+
+
 //  This thread runs infinitely and waits for a signal THREAD_START before it runs.
 void * 
 Thread  :: start(void *self) {
@@ -112,7 +122,9 @@ Thread  :: start(void *self) {
 
     while(1)    {
         pthread_mutex_lock(&t->busyLock);
-        pthread_cond_wait(t->getCondSchedule(), &t->busyLock);
+    //    while (t->getThreadState() == THREAD_WAITING)   {
+            pthread_cond_wait(t->getCondSchedule(), &t->busyLock);
+    //    }
         switch (t->getThreadState())   {
             case THREAD_STOP:
                 exitFlag = true;

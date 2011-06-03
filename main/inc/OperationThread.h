@@ -15,6 +15,7 @@ class OperationThread   : public Thread {
     
 private:
     std::vector<T>        op1, op2; 
+    T                     multiplier;
     std::vector<M>        *result;  //  TODO directly store the result in the output vector
     std::vector<T>        *carry;
     int                   shift;
@@ -46,6 +47,10 @@ public:
     // getter setter for end index 
     int     getEndIdx();
     void    setEndIdx(int);
+
+    // getter setter for mutiplie
+    T       getMultiplier();
+    void    setMultiplier(T);
 
     // getter setter for shift
     int     getShift();
@@ -118,6 +123,18 @@ OperationThread<T, M> :: getEndIdx()   {
 }
 
 template <class T, class M>
+inline T
+OperationThread<T, M> :: getMultiplier() {
+    return this->mutiplier;
+}
+
+template <class T, class M>
+inline void 
+OperationThread<T, M> :: setMultiplier(T multiplier)    {
+    this->multiplier = multiplier;
+}
+
+template <class T, class M>
 inline void
 OperationThread<T, M> :: setEndIdx(int end_idx)   {
     this->end_idx = end_idx;
@@ -176,6 +193,7 @@ template <class T, class M>
 void
 OperationThread<T, M> :: run()   {
     
+    int c = 0;
     this->setThreadState(THREAD_RUNNING);
     switch (operation)  {
         case ADD:
@@ -188,6 +206,18 @@ OperationThread<T, M> :: run()   {
         case SUB:
             for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
                 this->result->at(j++) = (M)this->op1[i] - (M)this->op2[i]; 
+            }
+            break;
+        case MULT:
+            for (int i = 0; i < end_idx - st_idx; i++)  {
+                M temp = (M) this->op1[i] * this->multiplier;    
+                temp += c;
+                c = 0;
+                if (temp > UINT_MAX)    {
+                   temp = temp - (UINT_MAX + 1);
+                   c = 1;
+                }
+                this->result->push_back(temp);
             }
             break;
         case AND:

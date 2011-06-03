@@ -14,7 +14,7 @@
 
 class Parallelizer  {
 public:
-    //  + - * / < > == 
+    //  + - / < > == 
     template <class T, class M>
     static void executeBatchRequest(const std::vector<T>&, const std::vector<T>&, std::vector<M>&, OPERATION, int, std::vector<T> &carrySet); 
 
@@ -22,13 +22,66 @@ public:
     template <class T, class M>
     static void executeBatchRequest(const std::vector<T>&, const int&, std::vector<M>&, OPERATION, int, std::vector<T> &carrySet); 
 
+    //  *
+    template <class T, class M>
+    static std::vector<std::vector<T> > executeBatchRequest(const std::vector<T>&, const std::vector<T>&, OPERATION); 
+
     template <class T, class M>
     static void ThreadGarbageCollector(bool);
 
     template <class T, class M>
     static void scheduler(const std::vector<T>&, const std::vector<T>&, std::vector<M>*, std::vector<T>*, OPERATION, int, int, bool isShift = false, int shift= 0);
 
+    template <class T, class M>
+    static void scheduler(const std::vector<T>&, const T&, std::vector<T>*, OPERATION);
+
 };
+
+template<class T, class M>
+void
+Parallelizer :: scheduler(const std::vector<T> &v1, const T &op2, std::vector<T> *intermediateResult, OPERATION op)   {
+
+        ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
+        OperationThread<T, M> *ot;
+        while ((ot=tp->getFreeThread()) == NULL) {
+           Parallelizer::ThreadGarbageCollector<T,M>(false); 
+           pthread_yield();
+        }
+                
+        ot->setOp1(v1);
+        ot->setMultiplier(op2);
+        ot->setStIdx(0);
+        ot->setEndIdx(v1.size());
+        ot->setOperation(op);
+        ot->setResult(intermediateResult);
+        ot->setThreadState(THREAD_SCHED);
+
+        while (ot->getThreadState() == THREAD_SCHED) {
+       //     pthread_mutex_lock(ot->getBusyLock());
+            pthread_cond_signal(ot->getCondSchedule());
+       //     pthread_mutex_unlock(ot->getBusyLock());
+            pthread_yield();
+        }
+   
+}
+
+template<class T, class M>
+std::vector<std::vector<T> >
+Parallelizer :: executeBatchRequest(const std::vector<T>& v1, const std::vector<T>& v2, OPERATION op)   {
+
+    std::vector<std::vector<T> >    toReturn;
+
+    for (int i = 0; i < v2.size(); i++) {
+        std::vector<T> intermediateResult;
+        T op2 = v2[i];
+//        scheduler(v1, op2, &intermediateResult, op);
+        toReturn.push_back(intermediateResult);
+    }
+
+    //  barrier
+    Parallelizer::ThreadGarbageCollector<T, M>(true);
+    return toReturn;
+}
 
 template <class T, class M>
 void
@@ -54,7 +107,9 @@ Parallelizer :: scheduler(const std::vector<T> &block_v1, const std::vector<T> &
         ot->setThreadState(THREAD_SCHED);
 
         while (ot->getThreadState() == THREAD_SCHED) {
+       //     pthread_mutex_lock(ot->getBusyLock());
             pthread_cond_signal(ot->getCondSchedule());
+       //     pthread_mutex_unlock(ot->getBusyLock());
             pthread_yield();
         }
 }
@@ -94,15 +149,13 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const int &shif
 
     for (i = 0; i < blocks; i++)    {
         std::vector<T>   block_v1(&oper1[i*BLOCK_SIZE], &oper1[i*BLOCK_SIZE + BLOCK_SIZE]);
-//        std::vector<T>   block_v2(&oper2[i*BLOCK_SIZE], &oper2[i*BLOCK_SIZE + BLOCK_SIZE]);
         scheduler (block_v1, dummy, &result, &carrySet, op, i * BLOCK_SIZE,i * BLOCK_SIZE + BLOCK_SIZE, true, shift); 
     }
     if (mod != 0)   {
         std::vector<T>   block_v1(&oper1[i*BLOCK_SIZE], &oper1[limit]);
-//        std::vector<T>   block_v2(&oper2[i*BLOCK_SIZE], &oper2[limit]);
         scheduler (block_v1, dummy, &result, &carrySet, op, i * BLOCK_SIZE, limit, true, shift); 
     }
-
+    //  like a barrier
     Parallelizer::ThreadGarbageCollector<T, M>(true);
 }
 

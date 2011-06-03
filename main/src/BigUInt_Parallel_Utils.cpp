@@ -157,6 +157,41 @@ BigUInt_Parallel_Utils::SubtractBignum(vector<uint32_t>& num1, vector<uint32_t>&
 vector<uint32_t>
 BigUInt_Parallel_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
 {
+    vector<uint32_t>    result;
+    //  normal multiplication
+
+    //  if any vector is zero return empty
+    if (!num1.size() || !num2.size())
+        return result;
+
+    //  if one vector size is greater than other vector swap for efficient
+    //  parallelization.
+    if (num1.size() > num2.size())  
+        num1.swap(num2);
+
+    vector<vector<uint32_t> >  intermediateResults = Parallelizer::executeBatchRequest<uint32_t,uint64_t>(num1, num2, MULT); 
+    
+    //  shifting intermediate results
+    for (int i = 0; i < intermediateResults.size(); i++)    {
+        vector<uint32_t> intermediate = intermediateResults[i];
+        int j = i;
+        while (j--)   {
+            intermediate.insert(intermediate.begin(), 0);
+        }
+    }
+
+    //  addition intermediate results
+    result = intermediateResults[0];
+    for (int i = 1; i < intermediateResults.size(); i++)    {
+        result = AddBignum (result, intermediateResults[i]);
+    }
+
+    return result;    
+}
+
+/*  vector<uint32_t>
+BigUInt_Parallel_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
+{
     vector <uint32_t> result;
     //using vedic math urdhwatiryak method
 
@@ -226,7 +261,7 @@ BigUInt_Parallel_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>&
     }
 
     return result;
-}
+}*/
 
 vector<uint32_t>
 BigUInt_Parallel_Utils::DivideBignum(vector<uint32_t>& num1, vector<uint32_t>& num2)
