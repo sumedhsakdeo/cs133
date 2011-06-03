@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 extern "C" {
 #include <stdint.h>
 #include <sys/time.h>
@@ -42,7 +43,6 @@ main(int argc, char **argv)
 
         //fout << op1.ToString() << endl;
         //fout << op2.ToString() << endl;
-
         bool eq;
 
         struct timeval tv_beg, tv_end;
@@ -56,8 +56,19 @@ main(int argc, char **argv)
 
         string eq_str;
         fin >> eq_str;
+
+        bool testeq;
+
+
+        if (atoi(eq_str.c_str())) {
+            testeq = true;
+        }
+        else {
+            testeq = false;
+        }
+
         //fout << sum.ToString() << endl;
-        if (!eq_str.compare("true")) {
+        if (eq == testeq) {
             //cout << i << " : " << "Success: Addition" << endl;
         } else {
             cerr << i << " : " << "Failure: Equality" << endl;

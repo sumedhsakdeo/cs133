@@ -3,8 +3,11 @@
 import random
 import math
 
+cases = 200
+print cases
+
 #sum = 0
-for j in range(100):
+for j in range(cases):
     eqlflag = random.randint(0,1)
 
     a = 0

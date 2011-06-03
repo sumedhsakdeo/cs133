@@ -116,9 +116,9 @@ run-rshift: test
 	@echo "Parallel:"
 	obj/rshift_p obj/in_rshift
 
-test_serial: all_serial test/main.cpp test/p_add.cpp
-	g++ -g -Iinc/ -lpthread test/p_add.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o -o obj/s_add
-	g++ -g -Iinc/ test/main.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/serial
+test_serial: all_serial
+	#g++ -g -Iinc/ -lpthread test/p_add.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o -o obj/s_add
+	#g++ -g -Iinc/ test/main.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/serial
 	g++ -g -Iinc/ test/add.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/add_s
 	g++ -g -Iinc/ test/sub.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/sub_s
 	g++ -g -Iinc/ test/mult.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/mult_s
@@ -131,9 +131,9 @@ test_serial: all_serial test/main.cpp test/p_add.cpp
 	g++ -g -Iinc/ test/lshift.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/lshift_s
 	g++ -g -Iinc/ test/rshift.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/rshift_s
 
-test_parallel: all_parallel test/p_add.cpp test/main.cpp
-	g++ -g -Iinc/ -lpthread test/p_add.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/p_add
-	g++ -g -Iinc/ -lpthread test/main.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/parallel
+test_parallel: all_parallel
+	#g++ -g -Iinc/ -lpthread test/p_add.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/p_add
+	#g++ -g -Iinc/ -lpthread test/main.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/parallel
 	g++ -g -Iinc/ -lpthread test/add.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/add_p
 	g++ -g -Iinc/ -lpthread test/sub.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/sub_p
 	g++ -g -Iinc/ -lpthread test/mult.cpp obj/Common_Utils.o obj/BigUInt_Parallel_Utils.o obj/BigUInt_Parallel.o obj/BigUInt_p.o -o obj/mult_p
@@ -148,4 +148,4 @@ test_parallel: all_parallel test/p_add.cpp test/main.cpp
 	g++ -g -Iinc/ -lpthread test/rshift.cpp obj/Common_Utils.o obj/BigUInt_Utils.o obj/BigUInt_Serial.o obj/BigUInt_s.o  -o obj/rshift_p
 
 clean:
-	rm -r obj/*.o
+	rm -r obj
