@@ -3,7 +3,7 @@
 import random
 import math
 
-cases = 200
+cases = 500
 print cases
 
 doAnd = False 
