@@ -86,7 +86,7 @@ int main(int argc, char **argv)  {
     
     BigUInt op11("123456789123456789"),op21("987654321123456789123456789");
 
-    cout << (op11 * op11).ToString();
+    cout << (op21 / op11).ToString();
 
 
  /*   int count = 1000;
