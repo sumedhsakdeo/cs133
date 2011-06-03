@@ -57,9 +57,9 @@ Parallelizer :: scheduler(const std::vector<T> &v1, const T &op2, std::vector<T>
         ot->setThreadState(THREAD_SCHED);
 
         while (ot->getThreadState() == THREAD_SCHED) {
-       //     pthread_mutex_lock(ot->getBusyLock());
+            pthread_mutex_lock(ot->getBusyLock());
             pthread_cond_signal(ot->getCondSchedule());
-       //     pthread_mutex_unlock(ot->getBusyLock());
+            pthread_mutex_unlock(ot->getBusyLock());
             pthread_yield();
         }
    
