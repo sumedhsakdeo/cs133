@@ -193,7 +193,7 @@ template <class T, class M>
 void
 OperationThread<T, M> :: run()   {
     
-    int c = 0;
+    uint32_t c = 0;
     this->setThreadState(THREAD_RUNNING);
     switch (operation)  {
         case ADD:
@@ -209,16 +209,14 @@ OperationThread<T, M> :: run()   {
             }
             break;
         case MULT:
-            for (int i = 0; i < end_idx - st_idx; i++)  {
+            for (int i = st_idx; i < end_idx; i++)  {
                 uint64_t temp = (uint64_t) this->op1[i] * this->multiplier;    
                 temp += c;
-                c = 0;
-                if (temp > UINT_MAX)    {
-                   temp = temp - (UINT_MAX + 1);
-                   c = 1;
-                }
-                this->result->push_back((M)temp);
+                c = (uint32_t) (temp >> 32);
+                this->result->push_back((M)(temp & 0x0ffffffff));
             }
+            if (c!=0)
+                this->result->push_back(c);
             break;
         case AND:
             for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {

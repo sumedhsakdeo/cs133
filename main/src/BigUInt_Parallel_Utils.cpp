@@ -166,17 +166,17 @@ BigUInt_Parallel_Utils::MultiplyBignum(vector<uint32_t>& num1, vector<uint32_t>&
 
     //  if one vector size is greater than other vector swap for efficient
     //  parallelization.
-    if (num1.size() > num2.size())  
-        num1.swap(num2);
+    //if (num1.size() < num2.size())  
+    //    num1.swap(num2);
 
     vector<vector<uint32_t> >  intermediateResults = Parallelizer::executeBatchRequest<uint32_t,uint32_t>(num1, num2, MULT); 
     
     //  shifting intermediate results
     for (int i = 0; i < intermediateResults.size(); i++)    {
-        vector<uint32_t> intermediate = intermediateResults[i];
+        //vector<uint32_t> intermediate = intermediateResults[i];
         int j = i;
         while (j--)   {
-            intermediate.insert(intermediate.begin(), 0);
+            intermediateResults[i].insert(intermediateResults[i].begin(), 0);
         }
     }
 

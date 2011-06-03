@@ -69,7 +69,7 @@ template<class T, class M>
 std::vector<std::vector<M> >
 Parallelizer :: executeBatchRequest(const std::vector<T>& v1, const std::vector<T>& v2, OPERATION op)   {
 
-    std::vector<std::vector<M> >    toReturn;
+    std::vector<std::vector<M> >    toReturn(v2.size());
 
     for (int i = 0; i < v2.size(); i++) {
         std::vector<M> intermediateResult;
@@ -86,9 +86,10 @@ Parallelizer :: executeBatchRequest(const std::vector<T>& v1, const std::vector<
         ot->setStIdx(0);
         ot->setEndIdx(v1.size());
         ot->setOperation(op);
-        ot->setResult(&intermediateResult);
+        ot->setResult(&toReturn[i]);
         ot->setThreadState(THREAD_SCHED);
 
+        toReturn[i] = intermediateResult;
         while (ot->getThreadState() == THREAD_SCHED) {
        //     pthread_mutex_lock(ot->getBusyLock());
             pthread_cond_signal(ot->getCondSchedule());
@@ -96,8 +97,6 @@ Parallelizer :: executeBatchRequest(const std::vector<T>& v1, const std::vector<
             pthread_yield();
         }
 
-//        scheduler(v1, op2, &intermediateResult, op);
-        toReturn.push_back(intermediateResult);
     }
 
     //  barrier
