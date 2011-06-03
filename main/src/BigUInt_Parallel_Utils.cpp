@@ -450,7 +450,7 @@ BigUInt_Parallel_Utils::Lshift(vector<uint32_t>& num1, const uint32_t& shift)
 {
     vector <uint32_t> result;
     int bitsindigit = sizeof(uint32_t) * 8;
-    uint64_t mask = pow((uint64_t) 2, bitsindigit) - 1;
+    uint64_t mask = pow((double) 2, (double) bitsindigit) - 1;
 
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
@@ -482,7 +482,7 @@ BigUInt_Parallel_Utils::Rshift(vector<uint32_t>& num1, const uint32_t& shift)
 {
     vector <uint32_t> result;
     int bitsindigit = sizeof(uint32_t) * 8;
-    uint64_t mask = (uint64_t) (pow((uint64_t) 2, bitsindigit) - 1) << bitsindigit;
+    uint64_t mask = (uint64_t) (pow((double) 2, (double) bitsindigit) - 1) << bitsindigit;
 
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
