@@ -1,5 +1,6 @@
 #include "BigUInt_Utils.h"
 #include <string>
+#include <iostream>
 #include <sstream>
 #include <algorithm>
 #include <climits>
@@ -201,8 +202,102 @@ BigUInt_Utils::DivideBignum(vector<uint32_t>& num1, vector<uint32_t>& num2) {
     
     vector<uint32_t> result;
 
-    if (num1.size() < num2.size() || (num1.size() == num2.size() && LessThan(num1, num2)))
+    if (num1.size() < num2.size() || (num1.size() == num2.size() && LessThan(num1, num2))) {
         return result;
+    }
+
+
+    vector<uint32_t> tempnum1 = num1;
+    reverse(tempnum1.begin(), tempnum1.end());
+
+    uint32_t quotient;
+    bool tocontinue = true;
+    int pos = 0;
+    vector<uint32_t> remainder;
+    vector<uint32_t> intproduct;
+
+    while (tocontinue) {
+        vector<uint32_t> temp;
+
+        for (int i = 0; i < num2.size() - remainder.size(); ++i) {
+            if (tempnum1.size() <=  pos) {
+                break;
+            }
+
+            temp.push_back(tempnum1.at(pos));
+            pos++;
+        }
+
+
+        reverse(temp.begin(), temp.end());
+
+        for (int i = 0; i < remainder.size(); ++i) {
+            temp.push_back(remainder.at(i));
+        }
+
+
+        if (temp.size() < num2.size()) {
+            tocontinue = false;
+            continue;
+        }
+
+        if (LessThan(temp, num2)) {
+            if (pos < tempnum1.size()) {
+                temp.insert(temp.begin(), tempnum1.at(pos));
+                pos++;
+            } else {
+                tocontinue = false;
+                continue;
+            }
+        }
+
+        if (temp.size() == num2.size()) {
+            uint32_t dividend = temp.at(temp.size() - 1);
+            uint32_t divisor = num2.at(num2.size() - 1);
+            quotient = dividend / divisor;
+
+            do {
+                vector<uint32_t> multiplier;
+                multiplier.push_back(quotient);
+
+                intproduct = MultiplyBignum(num2, multiplier);
+                if (GreaterThan(intproduct, temp)) {
+                    quotient--;
+                } else {
+                    break;
+                }
+            } while (true);
+        } else {
+            uint32_t divisor = num2.at(num2.size() - 1);
+            uint32_t digit1 = temp.at(temp.size() - 1);
+            uint32_t digit2 = temp.at(temp.size() - 2);
+            uint64_t dividend = UINT_MAX;
+            dividend += 1;
+            dividend *= digit1;
+            dividend += digit2;
+
+            quotient = (uint32_t) (dividend / divisor);
+
+            do {
+                vector<uint32_t> multiplier;
+                multiplier.push_back(quotient);
+
+                intproduct = MultiplyBignum(num2, multiplier);
+                if (GreaterThan(intproduct, temp)) {
+                    quotient--;
+                } else {
+                    break;
+                }
+           } while (true);
+
+        }
+
+        result.push_back(quotient);
+        remainder = SubtractBignum(temp, intproduct);
+    }
+
+    reverse(result.begin(), result.end());
+
     return result;
 }
 
@@ -394,7 +489,7 @@ BigUInt_Utils::Lshift(vector<uint32_t>& num1, const uint32_t& shift)
 {
     vector <uint32_t> result;
     int bitsindigit = sizeof(uint32_t) * 8;
-    uint64_t mask = pow((double) 2, bitsindigit) - 1;
+    uint64_t mask = pow((uint64_t) 2, bitsindigit) - 1;
 
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
@@ -422,7 +517,7 @@ BigUInt_Utils::Rshift(vector<uint32_t>& num1, const uint32_t& shift)
 {
     vector <uint32_t> result;
     int bitsindigit = sizeof(uint32_t) * 8;
-    uint64_t mask = (uint64_t) (pow((double) 2, bitsindigit) - 1) << bitsindigit;
+    uint64_t mask = (uint64_t) (pow((uint64_t) 2, bitsindigit) - 1) << bitsindigit;
 
     int newdigits = shift / bitsindigit;
     int inshift = shift % bitsindigit;
