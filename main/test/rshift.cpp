@@ -5,12 +5,14 @@ extern "C" {
 #include <stdint.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdlib.h>
 }
 
 #include <BigUInt.h>
 #include <Common_Utils.h>
 
 using namespace std;
+
 
 int
 main(int argc, char **argv)
@@ -24,12 +26,12 @@ main(int argc, char **argv)
 
     ifstream fin(argv[1], ifstream::in);
     //ofstream fout(argv[2], ofstream::out);
-
-    uint64_t total_time = 0;
     
     int num_tests;
     fin >> num_tests;
     //fout << num_tests << endl;
+
+    uint64_t total_time = 0;
 
     for (int i = 0; i < num_tests; ++i) {
         string op1_str, op2_str;
@@ -37,30 +39,31 @@ main(int argc, char **argv)
         fin >> op1_str >> op2_str;
 
         BigUInt op1(op1_str);
-        BigUInt op2(op2_str);
+        uint32_t shift = atoi(op2_str.c_str());
 
         //fout << op1.ToString() << endl;
         //fout << op2.ToString() << endl;
 
-        BigUInt orop;
+        BigUInt result;
 
         struct timeval tv_beg, tv_end;
         struct timezone tz;
  
         gettimeofday(&tv_beg, &tz);
-        orop = op1 | op2;
+        result = op1 >> shift;
         gettimeofday(&tv_end, &tz);
 
         total_time += GetTimeDifference(tv_beg, tv_end);
 
-        string or_str;
-        fin >> or_str;
-        //fout << orop.ToString() << endl;
-        if (!or_str.compare(orop.ToString())) {
-            //cout << i << " : " << "Success: OR" << endl;
+        string rshift_str;
+        fin >> rshift_str;
+        //fout << sum.ToString() << endl;
+        if (!rshift_str.compare(result.ToString())) {
+            //cout << i << " : " << "Success: Addition" << endl;
         } else {
-            cerr << i << " : " << "Failure: OR" << endl;
+            cerr << i << " : " << "Failure: Left Shift" << endl;
         }
+
     }
 
     fin.close();
@@ -69,4 +72,3 @@ main(int argc, char **argv)
 
     return 0;
 }
-

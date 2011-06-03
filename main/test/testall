@@ -1,69 +1,99 @@
-o "ADD =>"
+echo "ADD =>"
 echo "Serial:"
-./add_s in_add
+obj/add_s obj/in_add
 echo ""
 echo "Parallel:"
-./add_p in_add
+obj/add_p obj/in_add
 
 echo ""
 echo ""
 
 echo "SUB => "
 echo "Serial:"
-./sub_s in_sub
+obj/sub_s obj/in_sub
 echo ""
 echo "Parallel:"
-./sub_p in_sub
+obj/sub_p obj/in_sub
 
 echo ""
 echo ""
 
 echo "MULT =>"
 echo "Serial:"
-./mult_s in_mul
+obj/mult_s obj/in_mul
 echo ""
 echo "Parallel:"
-./mult_p in_mul
+obj/mult_p obj/in_mul
 
 echo ""
 echo ""
 
 echo "AND =>"
 echo "Serial:"
-./and_s in_and
+obj/and_s obj/in_and
 echo ""
 echo "Parallel:"
-./and_p in_and
+obj/and_p obj/in_and
 
 echo ""
 echo ""
 
 echo "OR =>"
 echo "Serial:"
-./or_s in_or
+obj/or_s obj/in_or
 echo ""
 echo "Parallel:"
-./or_p in_or
+obj/or_p obj/in_or
 
 echo ""
 echo ""
 
 echo "XOR =>"
 echo "Serial:"
-./xor_s in_xor
+obj/xor_s obj/in_xor
 echo ""
 echo "Parallel:"
-./xor_p in_xor
+obj/xor_p obj/in_xor
 
 echo ""
 echo ""
 
 echo "NOT =>"
 echo "Serial:"
-./not_s in_not
+obj/not_s obj/in_not
 echo ""
 echo "Parallel:"
-./not_p in_not
+obj/not_p obj/in_not
+
+echo ""
+echo ""
+
+echo "EQ =>"
+echo "Serial:"
+obj/eq_s obj/in_eq
+echo ""
+echo "Parallel:"
+obj/eq_p obj/in_eq
+
+echo ""
+echo ""
+
+echo "LSHIFT =>"
+echo "Serial:"
+obj/lshift_s obj/in_lshift
+echo ""
+echo "Parallel:"
+obj/lshift_p obj/in_lshift
+
+echo ""
+echo ""
+
+echo "RSHIFT =>"
+echo "Serial:"
+obj/rshift_s obj/in_rshift
+echo ""
+echo "Parallel:"
+obj/rshift_p obj/in_rshift
 
 echo ""
 echo ""
