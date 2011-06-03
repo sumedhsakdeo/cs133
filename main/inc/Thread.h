@@ -122,9 +122,9 @@ Thread  :: start(void *self) {
 
     while(1)    {
         pthread_mutex_lock(&t->busyLock);
-        while (t->getThreadState() == THREAD_WAITING)   {
+    //    while (t->getThreadState() == THREAD_WAITING)   {
             pthread_cond_wait(t->getCondSchedule(), &t->busyLock);
-        }
+    //    }
         switch (t->getThreadState())   {
             case THREAD_STOP:
                 exitFlag = true;
