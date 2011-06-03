@@ -15,9 +15,6 @@ BigUInt_Parallel_Impl::BigUInt_Parallel_Impl()
 BigUInt_Parallel_Impl::BigUInt_Parallel_Impl(const string& str)
 {
 	this->buf = Common_Utils::StringToVector(str);	
-    /* std::cout << "----------";
-    for (int i=0; i < this->buf.size(); i++)    
-        std::cout << this->buf[i] << "\t";*/
 }
 
 BigUInt_Parallel_Impl::BigUInt_Parallel_Impl(const BigUInt_Parallel_Impl &to_copy)
