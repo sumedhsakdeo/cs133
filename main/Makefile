@@ -55,10 +55,10 @@ run-mult: test
 run-div: test
 	@echo "DIV =>"
 	@echo "Serial:"
-	obj/div_s obj/in_and
+	obj/div_s obj/in_div
 	@echo ""
 	@echo "Parallel:"
-	obj/div_p obj/in_and
+	obj/div_p obj/in_div
 
 run-and: test
 	@echo "AND =>"

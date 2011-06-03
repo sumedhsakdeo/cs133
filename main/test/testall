@@ -28,6 +28,16 @@ obj/mult_p obj/in_mul
 echo ""
 echo ""
 
+echo "DIV =>"
+echo "Serial:"
+obj/div_s obj/in_div
+echo ""
+echo "Parallel:"
+obj/div_p obj/in_div
+
+echo ""
+echo ""
+
 echo "AND =>"
 echo "Serial:"
 obj/and_s obj/in_and
