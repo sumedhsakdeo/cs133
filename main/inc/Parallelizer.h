@@ -27,7 +27,7 @@ public:
     static std::vector<std::vector<M> > executeBatchRequest(const std::vector<T>&, const std::vector<T>&, OPERATION); 
 
     template <class T, class M>
-    static void ThreadGarbageCollector(bool);
+    static void ThreadBarrier(bool);
 
     template <class T, class M>
     static void scheduler(const std::vector<T>&, const std::vector<T>&, std::vector<M>*, std::vector<T>*, OPERATION, int, int, bool isShift = false, int shift= 0);
@@ -44,7 +44,7 @@ Parallelizer :: scheduler(const std::vector<T> &v1, const T &op2, std::vector<T>
         ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
         OperationThread<T, M> *ot;
         while ((ot=tp->getFreeThread()) == NULL) {
-           Parallelizer::ThreadGarbageCollector<T,M>(false); 
+           Parallelizer::ThreadBarrier<T,M>(false); 
            pthread_yield();
         }
                 
@@ -77,7 +77,7 @@ Parallelizer :: executeBatchRequest(const std::vector<T>& v1, const std::vector<
         ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
         OperationThread<T, M> *ot;
         while ((ot=tp->getFreeThread()) == NULL) {
-           Parallelizer::ThreadGarbageCollector<T,M>(false); 
+           Parallelizer::ThreadBarrier<T,M>(false); 
            pthread_yield();
         }
                 
@@ -100,7 +100,7 @@ Parallelizer :: executeBatchRequest(const std::vector<T>& v1, const std::vector<
     }
 
     //  barrier
-    Parallelizer::ThreadGarbageCollector<T, M>(true);
+    Parallelizer::ThreadBarrier<T, M>(true);
     return toReturn;
 }
 
@@ -111,7 +111,7 @@ Parallelizer :: scheduler(const std::vector<T> &block_v1, const std::vector<T> &
         ThreadPool<OperationThread<T, M> > *tp = ThreadPool<OperationThread<T, M> >::getInstance();
         OperationThread<T, M> *ot;
         while ((ot=tp->getFreeThread()) == NULL) {
-           Parallelizer::ThreadGarbageCollector<T,M>(false); 
+           Parallelizer::ThreadBarrier<T,M>(false); 
            pthread_yield();
         }
                 
@@ -155,7 +155,7 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const std::vect
         scheduler (block_v1, block_v2, &result, &carrySet, op, i * BLOCK_SIZE, limit); 
     }
 
-    Parallelizer::ThreadGarbageCollector<T, M>(true);
+    Parallelizer::ThreadBarrier<T, M>(true);
 }
 
 template <class T, class M> 
@@ -177,14 +177,14 @@ Parallelizer :: executeBatchRequest(const std::vector<T> &oper1, const int &shif
         scheduler (block_v1, dummy, &result, &carrySet, op, i * BLOCK_SIZE, limit, true, shift); 
     }
     //  like a barrier
-    Parallelizer::ThreadGarbageCollector<T, M>(true);
+    Parallelizer::ThreadBarrier<T, M>(true);
 }
 
 //  Result collector which 
 //  sets the result of THREAD_DONE thread, and adds it back to the free_list
 template <class T, class M>
 void
-Parallelizer :: ThreadGarbageCollector(bool blocking)    {
+Parallelizer :: ThreadBarrier(bool blocking)    {
     
    bool allDone = false;
    do   {
