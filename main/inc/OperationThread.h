@@ -4,7 +4,7 @@
 #include    "Thread.h"
 
 #ifndef BLOCK_SIZE
-#define     BLOCK_SIZE  40
+#define BLOCK_SIZE  80
 #endif
 
 // This class is child class of abstract Thread which is templatized.
@@ -245,9 +245,9 @@ OperationThread<T, M> :: run()   {
             break;
         case GT:
             for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
-                if ((M)this->op1[i] > (M)this->op2[i])
+                if (this->op1[i] > this->op2[i])
                     this->result->at(j++) = 1;
-                else if ((M)this->op1[i] < (M)this->op2[i])
+                else if (this->op1[i] < this->op2[i])
                     this->result->at(j++) = -1;
                 else
                     this->result->at(j++) = 0;
@@ -255,10 +255,10 @@ OperationThread<T, M> :: run()   {
             break;
         case LT:
             for (int i = 0, j = st_idx; i < end_idx - st_idx; i++)  {
-                if ((M)this->op1[i] < (M)this->op2[i])
-                    this->result->at(j++) = 1;
-                else if ((M)this->op1[i] > (M)this->op2[i])
+                if (this->op1[i] < this->op2[i])
                     this->result->at(j++) = -1;
+                else if (this->op1[i] > this->op2[i])
+                    this->result->at(j++) = 1;
                 else
                     this->result->at(j++) = 0;
             }

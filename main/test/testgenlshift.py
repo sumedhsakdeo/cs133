@@ -3,7 +3,7 @@
 import random
 import math
 
-cases = 200
+cases = 20
 print cases
 #sum = 0
 for j in range(cases):

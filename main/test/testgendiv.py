@@ -3,7 +3,7 @@
 import random
 import math
 
-cases = 50
+cases = 20
 print cases
 
 for j in range(cases):

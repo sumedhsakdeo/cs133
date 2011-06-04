@@ -2,7 +2,10 @@
 #define _INC_THREAD_POOL_H
 #include    <iostream>
 #include    <pthread.h>
+
+#ifndef POOL_CNT
 #define POOL_CNT    30
+#endif
 
 //  A class which manages POOL_CNT threads which can be used for performing a
 //  computation.
@@ -62,6 +65,7 @@ ThreadPool<T>  ::  init() {
     
 	task_queue = NULL;
 	free_list  = NULL;
+	//pthread_setconcurrency(2);
     for (int i = 0; i < POOL_CNT; i++)    {
         struct thread_node *tmp = new struct thread_node;
         tmp->tid    = i;
