@@ -1,3 +1,7 @@
+POOL_CNT := 4
+BLOCK_SIZE := 120
+
+
 all: objdir all_serial all_parallel
 
 objdir:
