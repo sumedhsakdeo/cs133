@@ -1,6 +1,6 @@
 POOL_CNT := 4
 BLOCK_SIZE := 120
-DATA_SIZE := 10
+DATA_SIZE := 1000
 
 
 all: objdir all_serial all_parallel
