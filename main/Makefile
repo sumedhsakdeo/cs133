@@ -1,5 +1,6 @@
 POOL_CNT := 4
 BLOCK_SIZE := 120
+DATA_SIZE := 10
 
 
 all: objdir all_serial all_parallel
@@ -27,7 +28,7 @@ parallel: src/BigUInt_Parallel_Utils.cpp src/BigUInt_Parallel_Impl.cpp src/BigUI
 test: objdir test_serial test_parallel
 	cp test/testall obj/
 	chmod +x obj/testall
-	test/gen-inputs.sh
+	test/gen-inputs.sh $(DATA_SIZE)
 
 run-test: test
 	obj/testall

@@ -1,5 +1,9 @@
 #!/bin/bash
-make run-test POOL_CNT=1 BLOCK_SIZE=120
-make run-test POOL_CNT=2 BLOCK_SIZE=120
-make run-test POOL_CNT=4 BLOCK_SIZE=120
-make run-test POOL_CNT=8 BLOCK_SIZE=120
+make clean
+make run-test DATA_SIZE=10
+make clean
+make run-test POOL_CNT=100
+make clean
+make run-test POOL_CNT=1000
+make clean
+make run-test POOL_CNT=10000
